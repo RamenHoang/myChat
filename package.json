@@ -1,0 +1,22 @@
+{
+  "name": "mychat",
+  "version": "1.0.0",
+  "description": "myChat",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RamenHoang/myChat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RamenHoang/myChat/issues"
+  },
+  "homepage": "https://github.com/RamenHoang/myChat#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
