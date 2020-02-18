@@ -1,13 +1,13 @@
-var express = require('express');
-var app = express();
+import express from 'express';
+let app = express();
 
-var hostname = 'localhost';
-var port = 8080;
+let hostname = 'localhost';
+let port = 8080;
 
-app.get('/helloWorld', function(req, res) {
+app.get('/helloWorld', (req, res) => {
 	res.send('<h1>Hello World</h1>');
 });
 
-app.listen(port, hostname, function() {
+app.listen(port, hostname, () => {
 	console.log(`Hello Ramen, I'm running at ${hostname}:${port}/`);
 });
