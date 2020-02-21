@@ -1,1 +1,5 @@
-<div class="master-success-message alert alert-success">Success example</div>
+<% if(success != "") { %>
+	<% success.forEach(function(aSuccess) { %>
+		<div class="master-success-message alert alert-success"><%- aSuccess %></div>
+	<% }) %>
+<% } %>
