@@ -1,2 +1,13 @@
-<div class="alert alert-danger">Error example.</div>
-<div class="alert alert-success">Success example.</div>
+<% if(errors != '') { %>
+	<% errors.forEach(function(error) { %>
+		<script type="text/javascript">openRegisterModal();</script>
+		<div class="alert alert-danger"><%- error %></div>
+	<% }) %>
+<% } %>
+
+<% if(success != '') { %>
+	<% success.forEach(function(aSuccess) { %>
+		<script type="text/javascript">openLoginModal();</script>
+		<div class="alert alert-success"><%- aSuccess %></div>
+	<% }) %>
+<% } %>

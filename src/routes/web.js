@@ -1,6 +1,6 @@
 import express from 'express';
 import { home, auth } from './../controllers/controllers';
-import {authValid} from '../validation/validators';
+import { authValid } from './../validation/validators';
 
 let router = express.Router();
 
