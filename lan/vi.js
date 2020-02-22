@@ -17,7 +17,8 @@ export const transErrors = {
 export const transSuccess = {
 	register_success: (email) => `Tài khoản <strong>${email}</strong> đã được tạo. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`,
 	account_actived: 'Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào myChat',
-	login_success: (username) => 	`Xin chào ${username}, chúc một ngày tốt lành!`
+	login_success: (username) => 	`Xin chào ${username}, chúc một ngày tốt lành!`,
+	logout_success: 'Đăng xuất tài khoản thành công. Hẹn gặp lại!'
 }
 
 export const transMail = {

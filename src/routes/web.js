@@ -15,18 +15,19 @@ let router = express.Router();
  * @return {[type]} [description]
  */
 let initRoutes = (app) => {
-	router.get('/', home.getHome);
-	router.get('/login-register', auth.getLoginRegister);
-	router.get('/logout', auth.getLogout);
-	router.get('/verify/:token', auth.getVerifyAccount);
+	router.get('/', authValid.checkLoggedIn, home.getHome);
+	router.get('/login-register', authValid.checkLoggedOut, auth.getLoginRegister);
+	router.get('/logout', authValid.checkLoggedIn, auth.getLogout);
+	router.get('/verify/:token', authValid.checkLoggedOut, auth.getVerifyAccount);
 
-	router.post('/register', authValid.register, auth.postRegister);
-	router.post('/login', passport.authenticate('local', {
+	router.post('/register', authValid.checkLoggedOut, authValid.register, auth.postRegister);
+	router.post('/login', authValid.checkLoggedOut, passport.authenticate('local', {
 		successRedirect: '/',
 		failureRedirect: '/login-register',
 		successFlash: true,
 		failureFlash: true
 	}));
+	
 	app.use('/', router);
 }
 

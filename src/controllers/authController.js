@@ -1,11 +1,33 @@
 import { validationResult } from 'express-validator/check';
 import { auth } from '../services/services';
+import { transSuccess } from '../../lan/vi';
 
 let getLoginRegister = (req, res) => {
 	return res.render('auth/master', {
 		errors: req.flash('errors'),
 		success: req.flash('success')
 	});
+}
+
+let getVerifyAccount = async (req, res) => {
+	let errors = [];
+	let success = [];
+	try {
+		let verifyStatus = await auth.verifyAccount(req.params.token);
+		success.push(verifyStatus);
+		req.flash('success', success);
+		return res.redirect('/login-register');
+	} catch(error) {
+		errors.push(error);
+		req.flash('errors', errors);
+		return res.redirect('/login-register');
+	}
+}
+
+let getLogout = (req, res) => {
+	req.logout(); // remove session passport user
+	req.flash('success', transSuccess.logout_success);
+	return res.redirect('/login-register');
 }
 
 let postRegister = async (req, res) => {
@@ -38,25 +60,6 @@ let postRegister = async (req, res) => {
 			req.flash('errors', errors);
 			return res.redirect('/login-register');
 		})
-}
-
-let getVerifyAccount = async (req, res) => {
-	let errors = [];
-	let success = [];
-	try {
-		let verifyStatus = await auth.verifyAccount(req.params.token);
-		success.push(verifyStatus);
-		req.flash('success', success);
-		return res.redirect('/login-register');
-	} catch(error) {
-		errors.push(error);
-		req.flash('errors', errors);
-		return res.redirect('/login-register');
-	}
-}
-
-let getLogout = (req, res) => {
-	// do sth
 }
 
 module.exports = {
