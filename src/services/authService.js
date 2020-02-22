@@ -1,9 +1,10 @@
 import UserModel from '../models/userModel';
 import md5 from 'md5';
 import uuidv4 from 'uuid/v4';
-import { transErrors, transSuccess } from '../../lan/vi';
+import { transErrors, transSuccess, transMail } from '../../lan/vi';
+import sendMail from '../config/mailer';
 
-let register = (email, gender, password) => {
+let register = (email, gender, password, protocol, host) => {
 	return new Promise(async (resolve, reject) => {
 		let userByEmail = await UserModel.findByEmail(email);
 		// Check if email is used?
@@ -29,12 +30,35 @@ let register = (email, gender, password) => {
 			}
 		}
 
-		if (await UserModel.createNew(userItem) != null) {
-			return resolve(transSuccess.register_success(email));
+		let user = await UserModel.createNew(userItem);
+		if (user != null) {
+			// Send activitation mail
+			let verifyLink = `${protocol}://${host}/verify/${userItem.local.verifyToken}`;
+			sendMail(email, transMail.subject, transMail.template(verifyLink))
+				.then(success => {
+					resolve(transSuccess.register_success(email));
+				})
+				.catch( async error => {
+					// Remove user
+					await UserModel.removeById(user._id)
+					console.log(error);
+					reject(transMail.send_failed);
+				})
 		};
 	});
 }
 
+let verifyAccount = (token) => {
+	return new Promise(async (resolve, reject) => {
+		if (await UserModel.findByToken(token) === null) {
+			return reject(transErrors.email_is_actived);
+		}
+		await UserModel.verify(token);
+		resolve(transSuccess.account_actived);
+	});
+}
+
 module.exports = {
-	register: register 
+	register: register,
+	verifyAccount: verifyAccount
 }

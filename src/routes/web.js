@@ -14,6 +14,7 @@ let initRoutes = (app) => {
 	router.get('/login-register', auth.getLoginRegister);
 	router.get('/logout', auth.getLogout);
 	router.post('/register', authValid.register, auth.postRegister);
+	router.get('/verify/:token', auth.getVerifyAccount);
 	app.use('/', router);
 }
 

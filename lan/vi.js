@@ -8,9 +8,22 @@ export const transValidation = {
 export const transErrors = {
 	email_in_use: 'Email này đã được sử dụng!',
 	email_is_removed: 'Email này đã bị xoá!',
-	email_is_not_actived: (email) => `Email này chưa được kích hoạt. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`
+	email_is_not_actived: (email) => `Email này chưa được kích hoạt. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`,
+	email_is_actived: 'Email này đã được kích hoạt từ trước!'
 }
 
 export const transSuccess = {
-	register_success: (email) => `Tài khoản <strong>${email}</strong> đã được tạo. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`
+	register_success: (email) => `Tài khoản <strong>${email}</strong> đã được tạo. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`,
+	account_actived: 'Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào myChat'
+}
+
+export const transMail = {
+	subject: 'myChat: Xác nhận kích hoạt tài khoản',
+	template: (verifyLink) => `
+		<h2>Bạn nhận được email này vì đã đăng ký sử dụng ứng dụng myChat</h2>
+		<h3>Vui lòng click vào liên kết bên dưới để xác nhận kích hoạt tài khoản</h3>
+		<h3><a href='${verifyLink}' target='blank'>${verifyLink}</a></h3>
+		<h4>Cảm ơn bạn đã sử dụng myChat :D <3</h4>
+	`,
+	send_failed: 'Có lỗi trong quá trình gửi email'
 }
