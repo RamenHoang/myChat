@@ -8,27 +8,27 @@ let UserSchema = new Schema({
 	gender: 		{type: String, default: 'female'},
 	phone: 			{type: String, default: null},
 	address: 		{type: String, default: null},
-	avatar: 		{type:String, default: 'avatar-default.jpg'},
+	avatar: 		{type: String, default: 'avatar-default.jpg'},
 	role: 			{type: String, default: 'user'},
 	local: 			{
-								email: {type: String, trim: true},
-								password: String,
-								isActive: {type: Boolean, default: false},
-								verifyToken: String
+								email: 				{ type: String, trim: true },
+								password: 		String,
+								isActive: 		{ type: Boolean, default: false },
+								verifyToken: 	String
 							},
 	facebook: 	{
-								uid: String,
-								token: String,
-								email: {type: String, trim: true}
+								uid: 		String,
+								token: 	String,
+								email: 	{ type: String, trim: true }
 							},
 	google: 		{
-								uid: String,
-								token: String,
-								email: {type: String, trim: true}
+								uid: 		String,
+								token: 	String,
+								email: 	{ type: String, trim: true }
 							},
-	createdAt: 	{type: Date, default: Date.now},
-	updatedAt: 	{type: Date, default: null},
-	deletedAt: 	{type: Date, default: null}
+	createdAt: 	{ type: Date, default: Date.now },
+	updatedAt: 	{ type: Date, default: null },
+	deletedAt: 	{ type: Date, default: null }
 });
 
 UserSchema.statics = {
@@ -42,7 +42,7 @@ UserSchema.statics = {
 		return this.findByIdAndRemove(id).exec();
 	},
 	findByToken(token) {
-		return this.findOne({ 'local.local.verifyToken': token }).exec();
+		return this.findOne({ 'local.verifyToken': token }).exec();
 	},
 	verify(token) {
 		return this.findOneAndUpdate(
