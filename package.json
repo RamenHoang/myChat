@@ -30,6 +30,7 @@
     "express-validator": "^4.3.0",
     "md5": "^2.2.1",
     "mongoose": "^5.9.1",
+    "nodemailer": "^4.4.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

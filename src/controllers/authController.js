@@ -25,7 +25,7 @@ let postRegister = async (req, res) => {
 	}
 
 	// Succeed
-	await auth.register(req.body.email, req.body.gender, req.body.password)
+	await auth.register(req.body.email, req.body.gender, req.body.password, req.protocol, req.get('host'))
 		.then((message = '') => {
 			if (message === '') return;
 			success.push(message);
@@ -40,6 +40,21 @@ let postRegister = async (req, res) => {
 		})
 }
 
+let getVerifyAccount = async (req, res) => {
+	let errors = [];
+	let success = [];
+	try {
+		let verifyStatus = await auth.verifyAccount(req.params.token);
+		success.push(verifyStatus);
+		req.flash('success', success);
+		return res.redirect('/login-register');
+	} catch(error) {
+		errors.push(error);
+		req.flash('errors', errors);
+		return res.redirect('/login-register');
+	}
+}
+
 let getLogout = (req, res) => {
 	// do sth
 }
@@ -47,5 +62,6 @@ let getLogout = (req, res) => {
 module.exports = {
 	getLoginRegister: getLoginRegister,
 	getLogout: getLogout,
+	getVerifyAccount: getVerifyAccount,
 	postRegister: postRegister
 };

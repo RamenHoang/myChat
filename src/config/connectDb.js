@@ -21,7 +21,7 @@ let connectDb = () => {
 
 	let URI = `${DB_CONNECTION}://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
-	return mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+	return mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 }
 
 module.exports = connectDb;
