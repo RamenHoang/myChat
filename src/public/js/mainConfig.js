@@ -1,6 +1,14 @@
 /**
  * Created by https://trungquandev.com's author on 25/02/2018.
  */
+
+function flashMasterNotify() {
+  let notify = $('.master-success-message').text();
+  if (notify.length) {
+    alertify.notify(notify, 'success', 5);
+  }
+}
+
 function nineScrollLeft() {
   $('.left').niceScroll({
     smoothscroll: true,
@@ -171,4 +179,7 @@ $(document).ready(function() {
 
   // Action hủy việc tạo nhóm trò chuyện
   cancelCreateGroup();
+
+  // Hiển thị thông báo flash trên màn hình master
+  flashMasterNotify();
 });

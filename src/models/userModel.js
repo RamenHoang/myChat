@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import md5 from 'md5';
 
 let Schema = mongoose.Schema;
 
@@ -51,6 +52,15 @@ UserSchema.statics = {
 				'local.verifyToken': null
 			}
 		).exec();
+	},
+	findUserById(id) {
+		return this.findById(id).exec();
+	}
+}
+
+UserSchema.methods = {
+	comparePassword(password) {
+		return md5(password) === this.local.password;
 	}
 }
 

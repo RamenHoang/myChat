@@ -9,12 +9,15 @@ export const transErrors = {
 	email_in_use: 'Email này đã được sử dụng!',
 	email_is_removed: 'Email này đã bị xoá!',
 	email_is_not_actived: (email) => `Email này chưa được kích hoạt. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`,
-	email_is_actived: 'Email này đã được kích hoạt từ trước!'
+	email_is_actived: 'Email này đã được kích hoạt từ trước!',
+	login_failed: 'Sai tài khoản hoặc mật khẩu!',
+	server_error: 'Có lỗi phía server!'
 }
 
 export const transSuccess = {
 	register_success: (email) => `Tài khoản <strong>${email}</strong> đã được tạo. Vui lòng kích hoạt tài khoản tại email <strong>${email}</strong>!`,
-	account_actived: 'Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào myChat'
+	account_actived: 'Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào myChat',
+	login_success: (username) => 	`Xin chào ${username}, chúc một ngày tốt lành!`
 }
 
 export const transMail = {
