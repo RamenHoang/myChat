@@ -87,11 +87,32 @@ $(document).ready(function() {
 			contentType: false,
 			processData: false,
 			data: userAvatar,
-			success: function(res) {
-				// 
+			success: function(result) {
+				$('.user-modal-alert-success').css('display', 'none');
+				$('.user-modal-alert-error').css('display', 'none');
+				// Display success
+				$('.user-modal-alert-success').find('span').text(result.message);
+				$('.user-modal-alert-success').css('display', 'block');
+
+				// Update avatar at navbar
+				$('#navbar-avatar').attr('src', result.imageSrc);
+
+				// Update origin avatar src in front end
+				originAvatarSrc = result.imageSrc;
+				$('#input-btn-cancel-update-user').click();
+
+				// Refesh all
+				$('#input-btn-cancel-update-user').click();
 			},
 			error: function(err) {
-				// 
+				$('.user-modal-alert-success').css('display', 'none');
+				$('.user-modal-alert-error').css('display', 'none');
+				// Display error
+				$('.user-modal-alert-error').find('span').text(err.responseText);
+				$('.user-modal-alert-error').css('display', 'block');
+
+				// Refesh all
+				$('#input-btn-cancel-update-user').click();
 			}
 		})
 	});
@@ -99,6 +120,7 @@ $(document).ready(function() {
 	$('#input-btn-cancel-update-user').bind('click', function() {
 		userAvatar = null;
 		userInfo = {};
+		$('#input-change-avatar').val(null);
 		$('#user-modal-avatar').attr('src', originAvatarSrc);
 	})
 })
