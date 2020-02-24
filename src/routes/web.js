@@ -1,5 +1,5 @@
 import express from 'express';
-import { home, auth } from './../controllers/controllers';
+import { home, auth, user } from './../controllers/controllers';
 import { authValid } from './../validation/validators';
 import initPassportLocal from '../controllers/passportController/local';
 import passport from 'passport';
@@ -28,6 +28,8 @@ let initRoutes = (app) => {
 		failureFlash: true
 	}));
 	
+	router.put('/user/update-avatar', authValid.checkLoggedIn, user.updateAvatar);
+
 	app.use('/', router);
 }
 
