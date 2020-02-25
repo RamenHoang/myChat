@@ -7,7 +7,8 @@ export const transValidation = {
 	update_gender: 'Bạn thuộc giới tính nào vậy? :D',
 	update_address: 'Địa chỉ giới hạn trong vòng 3 - 30 kí tự',
 	update_phone: 'Số điện thoại chỉ có độ dài là 10 số',
-	new_password_invalid: 'Mật khẩu mới không được trùng với mật khẩu cũ'
+	new_password_invalid: 'Mật khẩu mới không được trùng với mật khẩu cũ',
+	keyword_find_user: 'Lỗi kí tự tìm kiếm. Chỉ cho phép chữ cái và số'
 };
 
 export const transErrors = {
