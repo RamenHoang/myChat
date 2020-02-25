@@ -2,7 +2,11 @@ export const transValidation = {
 	email_incorrect: 'Email phải có dạng example@gmail.com!',
 	gender_incorrect: 'Bạn thuộc giới tính thứ 3 à :D',
 	password_incorrect: 'Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số',
-	password_confirmation_incorrect: 'Nhập lại mật khẩu chưa chính xác'
+	password_confirmation_incorrect: 'Nhập lại mật khẩu chưa chính xác',
+	update_username: 'Username giới hạn trong vòng 3 - 17 kí tự và không chứa kí tự đặc biệt',
+	update_gender: 'Bạn thuộc giới tính nào vậy? :D',
+	update_address: 'Địa chỉ giới hạn trong vòng 3 - 30 kí tự',
+	update_phone: 'Số điện thoại chỉ có độ dài là 10 số',
 };
 
 export const transErrors = {
@@ -21,7 +25,7 @@ export const transSuccess = {
 	account_actived: 'Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào myChat',
 	login_success: (username) => 	`Xin chào ${username}, chúc một ngày tốt lành!`,
 	logout_success: 'Đăng xuất tài khoản thành công. Hẹn gặp lại!',
-	avatar_updated: 'Cập nhật avatar thành công!'
+	info_updated: 'Cập nhật thông tin thành công!'
 }
 
 export const transMail = {
