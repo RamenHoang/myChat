@@ -1,6 +1,6 @@
 import express from 'express';
-import { home, auth, user } from './../controllers/controllers';
-import { authValid, userValid } from './../validation/validators';
+import { home, auth, user, contact } from './../controllers/controllers';
+import { authValid, userValid, contactValid } from './../validation/validators';
 import initPassportLocal from '../controllers/passportController/local';
 import passport from 'passport';
 
@@ -19,6 +19,7 @@ let initRoutes = (app) => {
 	router.get('/login-register', authValid.checkLoggedOut, auth.getLoginRegister);
 	router.get('/logout', authValid.checkLoggedIn, auth.getLogout);
 	router.get('/verify/:token', authValid.checkLoggedOut, auth.getVerifyAccount);
+	router.get('/contact/find-users/:keyword', authValid.checkLoggedIn, contactValid.findUserContact, contact.findUsersContact);
 
 	router.post('/register', authValid.checkLoggedOut, authValid.register, auth.postRegister);
 	router.post('/login', authValid.checkLoggedOut, passport.authenticate('local', {

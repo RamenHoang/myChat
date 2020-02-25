@@ -14,6 +14,19 @@ let ContactSchema = new Schema({
 ContactSchema.statics = {
 	createNew(item) {
 		return this.create(item);
+	},
+	/**
+	 * [findAllByUserId find all id in contact table which is userId's friend]
+	 * @param  {[string]} userId [id of current user]
+	 * @return {[Promise]}    [this promise resolve all id]
+	 */
+	findAllByUserId(userId) {
+		return this.find({
+			$or: [
+				{ 'userId': userId },
+				{ 'contactId': userId }
+			]
+		}).exec();
 	}
 };
 
