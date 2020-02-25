@@ -29,13 +29,13 @@
                                 <div class="col-md-9 personal-info">
                                     <div class="alert alert-danger alert-dismissable user-modal-alert-error">
                                         <a class="panel-close close" data-dismiss="alert">×</a>
-                                        <span>Update user error example.</span>
+                                        <div>Update user error example.</div>
                                         <!-- <script>openProfileModal();</script> -->
                                     </div>
 
                                     <div class="alert alert-success alert-dismissable user-modal-alert-success">
                                         <a class="panel-close close" data-dismiss="alert">×</a>
-                                        <span>Update user success example.</span>
+                                        <div>Update user success example.</div>
                                         <!-- <script>openProfileModal();</script> -->
                                     </div>
 
@@ -108,18 +108,21 @@
                             </form>
                         </div>
                     </div>
+
                     <div id="password-profile" class="tab-pane fade">
                         <div class="col-md-9 personal-info">
-                            <div class="alert alert-danger alert-dismissable">
+                            <div id="" class="alert alert-danger alert-dismissable password-modal-alert-error">
                                 <a class="panel-close close" data-dismiss="alert">×</a>
-                                Update password error example<br>
-                                <!-- <script>openProfilePasswordModal();</script> -->
+                                <br>
+                                <div>Update user error example.</div>
+                                <!-- <script>openProfileModal();</script> -->
                             </div>
 
-                            <div class="alert alert-success alert-dismissable">
+                            <div class="alert alert-success alert-dismissable password-modal-alert-success">
                                 <a class="panel-close close" data-dismiss="alert">×</a>
-                                Update password success example<br>
-                                <!-- <script>openProfilePasswordModal();</script> -->
+                                <br>
+                                <div>Update user success example.</div>
+                                <!-- <script>openProfileModal();</script> -->
                             </div>
 
                             <h3>Thay đổi mật khẩu</h3>
@@ -128,27 +131,27 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Mật khẩu cũ</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="password" name="current_password" placeholder="Enter your curent password...">
+                                        <input id="input-change-current-password" class="form-control" type="password" name="current_password" placeholder="Enter your curent password...">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Mật khẩu mới</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="password" name="new_password" placeholder="Enter new password...">
+                                        <input id="input-change-new-password" class="form-control" type="password" name="new_password" placeholder="Enter new password...">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Nhập lại mật khẩu mới</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="password" name="confirm_new_password" placeholder="Enter confirm new password...">
+                                        <input id="input-change-confirm-password" class="form-control" type="password" name="confirm_new_password" placeholder="Enter confirm new password...">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"></label>
                                     <div class="col-md-8">
-                                        <input type="submit" class="btn btn-primary custom-background-btn-primary" value="Lưu lại">
+                                        <input type="button" id="input-btn-update-password" class="btn btn-primary custom-background-btn-primary" value="Lưu lại">
                                         <span></span>
-                                        <input type="reset" class="btn btn-default custom-background-btn-reset" value="Hủy bỏ">
+                                        <input type="button" id="input-btn-cancel-update-password" class="btn btn-default custom-background-btn-reset" value="Hủy bỏ">
                                     </div>
                                 </div>
                             </form>

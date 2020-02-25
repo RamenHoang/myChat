@@ -7,6 +7,7 @@ export const transValidation = {
 	update_gender: 'Bạn thuộc giới tính nào vậy? :D',
 	update_address: 'Địa chỉ giới hạn trong vòng 3 - 30 kí tự',
 	update_phone: 'Số điện thoại chỉ có độ dài là 10 số',
+	new_password_invalid: 'Mật khẩu mới không được trùng với mật khẩu cũ'
 };
 
 export const transErrors = {
@@ -17,7 +18,9 @@ export const transErrors = {
 	login_failed: 'Sai tài khoản hoặc mật khẩu!',
 	server_error: 'Có lỗi phía server!',
 	avatar_type: 'Kiểu file không hợp lệ. Chỉ chấp nhận jpg hoặc png',
-	avatar_size: 'Ảnh có dung lượng tối đa là 1MB'
+	avatar_size: 'Ảnh có dung lượng tối đa là 1MB',
+	account_undefined: 'Tài khoản không tồn tại',
+	current_password_not_match: 'Mật khẩu hiện tại không chính xác'
 }
 
 export const transSuccess = {
@@ -25,7 +28,8 @@ export const transSuccess = {
 	account_actived: 'Kích hoạt tài khoản thành công! Bạn đã có thể đăng nhập vào myChat',
 	login_success: (username) => 	`Xin chào ${username}, chúc một ngày tốt lành!`,
 	logout_success: 'Đăng xuất tài khoản thành công. Hẹn gặp lại!',
-	info_updated: 'Cập nhật thông tin thành công!'
+	info_updated: 'Cập nhật thông tin thành công!',
+	password_updated: 'Cập nhật mật khẩu thành công!'
 }
 
 export const transMail = {
