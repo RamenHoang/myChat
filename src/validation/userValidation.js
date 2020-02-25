@@ -17,7 +17,22 @@ let updateInfo = [
 		.matches(/^(0)[0-9]{9}$/)
 ];
 
+let updatePassword = [
+	check('currentPassword', transValidation.password_incorrect)
+		.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,}$/),
+	check('newPassword', transValidation.new_password_invalid)
+		.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,}$/)
+		.custom((value, { req }) => {
+			return value != req.body.currentPassword;
+		}),
+	check('confirmPassword', transValidation.password_confirmation_incorrect)
+		.custom((value, { req }) => {
+			return value === req.body.newPassword;
+		})
+];
+
 
 module.exports = {
-	updateInfo: updateInfo
+	updateInfo: updateInfo,
+	updatePassword: updatePassword
 }

@@ -1,7 +1,11 @@
+// User info
 let userAvatar = null;
 let userInfo = {};
 let originAvatarSrc = null;
 let originUserInfo = {};
+
+// User password
+let userUpdatePassword = {};
 
 function updateUserInfo() {
 	$('#input-change-avatar').bind('change', function() {
@@ -97,6 +101,49 @@ function updateUserInfo() {
 		delete userInfo.phone;
 	});
 
+	$('#input-change-current-password').bind('change', function() {
+		if ($(this).val().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,}$/)) {
+			userUpdatePassword.currentPassword = $(this).val();
+			return;
+		}
+		alertify.notify('Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số', 'error', 5);
+		delete userUpdatePassword.currentPassword;
+		$(this).val(null);
+	});
+
+	$('#input-change-new-password').bind('change', function() {
+		if ($('#input-change-current-password').val().trim() === '') {
+			alertify.notify('Vui lòng nhập mật khẩu hiện tại', 'error', 5);
+			$('#input-change-current-password').focus();
+			return;
+		}
+		if ($(this).val().match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,}$/)) {
+			if ($(this).val() === $('#input-change-current-password').val()) {
+				alertify.notify('Mật khẩu mới không được phép trùng với mật khẩu cũ', 'error', 5);
+				return;
+			}
+			userUpdatePassword.newPassword = $(this).val();
+			return;
+		}
+		alertify.notify('Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số', 'error', 5);
+		delete userUpdatePassword.newPassword;
+		$(this).val(null);
+	});
+
+	$('#input-change-confirm-password').bind('change', function() {
+		if ($('#input-change-new-password').val().trim() === '') {
+			alertify.notify('Vui lòng nhập mật khẩu mới', 'error', 5);
+			$('#input-change-new-password').focus();
+			return;
+		}
+		if ($(this).val() === $('#input-change-new-password').val()) {
+			userUpdatePassword.confirmPassword = $(this).val();
+			return;
+		}
+		alertify.notify('Nhập lại mật khẩu chưa chính xác', 'error', 5);
+		delete userUpdatePassword.confirmPassword;
+		$(this).val(null);
+	});
 }
 
 function callUpdateUserAvatar() {
@@ -146,7 +193,7 @@ function callUpdateUserInfo() {
 				$('.user-modal-alert-success').css('display', 'none');
 				$('.user-modal-alert-error').css('display', 'none');
 				// Display success
-				$('.user-modal-alert-success').find('span').text(result.message);
+				$('.user-modal-alert-success').find('div').text(result.message);
 				$('.user-modal-alert-success').css('display', 'block');
 
 				// Update origin user info
@@ -162,11 +209,53 @@ function callUpdateUserInfo() {
 				$('.user-modal-alert-success').css('display', 'none');
 				$('.user-modal-alert-error').css('display', 'none');
 				// Display error
-				$('.user-modal-alert-error').find('span').text(err.responseText);
+				$('.user-modal-alert-error').find('div').text(err.responseText);
 				$('.user-modal-alert-error').css('display', 'block');
 				// Refesh all
 				$('#input-btn-cancel-update-user').click();
 			}
+		});
+}
+
+function callUpdateUserPassword() {
+	$.ajax({
+			url: '/user/update-password',
+			type: 'put',
+			data: userUpdatePassword,
+			success: function(result) {
+				$('.password-modal-alert-success').css('display', 'none');
+				$('.password-modal-alert-error').css('display', 'none');
+				// Display success
+				$('.password-modal-alert-success').find('div').text(result.message);
+				$('.password-modal-alert-success').css('display', 'block');
+				// Refesh all
+				$('#input-btn-cancel-update-password').click();
+				callLogout();
+			},
+			error: function(err) {
+				$('.password-modal-alert-success').css('display', 'none');
+				$('.password-modal-alert-error').css('display', 'none');
+				// Display error
+				$('.password-modal-alert-error').find('div').text(err.responseText);
+				$('.password-modal-alert-error').css('display', 'block');
+				// Refesh all
+				$('#input-btn-cancel-update-password').click();
+			}
+		});
+}
+
+function callLogout() {
+	let timerInterval;
+	Swal.fire({
+	  position: 'top-end',
+	  title: 'Tài khoản của bạn sẽ đăng xuất sau 5 giây!',
+	  showConfirmButton: false,
+	  timer: 5000
+	})
+		.then(result => {
+			$.get('/logout', () => {
+				location.reload();
+			});
 		});
 }
 
@@ -208,4 +297,36 @@ $(document).ready(function() {
 		$('#input-change-address').val(originUserInfo.address);
 		$('#input-change-phone').val(originUserInfo.phone);
 	})
+
+	$('#input-btn-update-password').bind('click', function() {
+		if (!userUpdatePassword.currentPassword || !userUpdatePassword.newPassword || !userUpdatePassword.confirmPassword) {
+			alertify.notify('Vui lòng nhập đủ thông tin trước khi cập nhật', 'error', 5);
+			return;
+		}
+		Swal.fire({
+		  title: 'Đổi mật khẩu',
+		  text: "Bạn có đồng ý thay đổi mật khẩu không?",
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Có',
+		  cancelButtonText: 'Không'
+		}).then((result) => {
+			console.log(result);
+		  if (result.value) {
+		  	callUpdateUserPassword();
+		  } else {
+		  	$('#input-btn-cancel-update-password').click();
+		  	return;
+		  }
+		})
+	});
+
+	$('#input-btn-cancel-update-password').bind('click', function() {
+		userUpdatePassword = {};
+		$('#input-change-confirm-password').val(null);
+		$('#input-change-new-password').val(null);
+		$('#input-change-current-password').val(null);
+	});
 })
