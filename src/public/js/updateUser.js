@@ -1,6 +1,7 @@
 let userAvatar = null;
 let userInfo = {};
 let originAvatarSrc = null;
+let originUserInfo = {};
 
 function updateUserInfo() {
 	$('#input-change-avatar').bind('change', function() {
@@ -47,40 +48,59 @@ function updateUserInfo() {
 	});
 
 	$('#input-change-username').bind('change', function() {
-		userInfo.username = $(this).val();
+		if ($(this).val().match(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]{3,17}$/)) {
+			userInfo.username = $(this).val();
+			return;
+		}
+		alertify.notify('Username giới hạn trong vòng 3 - 17 kí tự và không chứa kí tự đặc biệt', 'error', 5);
+		$(this).val(originUserInfo.username);
+		delete userInfo.username;
 	});
 
 	$('#input-change-gender-male').bind('click', function() {
-		userInfo.gender = $(this).val();
+		if ($(this).val() === 'male') {
+			userInfo.gender = $(this).val();
+			return;
+		}
+		alertify.notify('Bạn thuộc giới tính nào vậy? :D', 'error', 5);
+		if (originUserInfo.gender === 'male') $(this).click();
+		delete userInfo.gender;
 	});
 
-	$('#input-change-gender-male').bind('click', function() {
-		userInfo.gender = $(this).val();
+	$('#input-change-gender-female').bind('click', function() {
+		if ($(this).val() === 'female') {
+			userInfo.gender = $(this).val();
+			return;
+		}
+		alertify.notify('Bạn thuộc giới tính nào vậy? :D', 'error', 5);
+		if (originUserInfo.gender === 'female') $(this).click();
+		delete userInfo.gender;
 	});
 
 	$('#input-change-address').bind('change', function() {
-		userInfo.address = $(this).val();
+		if ($(this).val().match(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ \/\-\,]{3,60}$/)) {
+			userInfo.address = $(this).val();
+			return;
+		}
+		alertify.notify('Địa chỉ giới hạn trong vòng 3 - 60 kí tự, chỉ được phép chứa các kí tự \/ \, \-', 'error', 5);
+		$(this).val(originUserInfo.address);
+		delete userInfo.address;
 	});
 
 	$('#input-change-phone').bind('change', function() {
-		userInfo.phone = $(this).val();
+		if ($(this).val().match(/^(0)[0-9]{9}$/)) {
+			userInfo.phone = $(this).val();
+			return;
+		}
+		alertify.notify('Số điện thoại chỉ có độ dài là 10 số', 'error', 5);
+		$(this).val(originUserInfo.phone);
+		delete userInfo.phone;
 	});
 
 }
 
-$(document).ready(function() {
-	updateUserInfo();
-
-	originAvatarSrc = $('#user-modal-avatar').attr('src')
-
-	$('#input-btn-update-user').bind('click', function() {
-		if ($.isEmptyObject(userInfo) && !userAvatar) {
-			alertify.notify('Bạn phải thay đổi thông tin trước khi cập nhật dữ liệu', 'error', 5);
-			return false;
-		}
-		
-		// Send a ajax request to server
-		$.ajax({
+function callUpdateUserAvatar() {
+	$.ajax({
 			url: '/user/update-avatar',
 			type: 'put',
 			cache: false,
@@ -114,7 +134,68 @@ $(document).ready(function() {
 				// Refesh all
 				$('#input-btn-cancel-update-user').click();
 			}
-		})
+		});
+}
+
+function callUpdateUserInfo() {
+	$.ajax({
+			url: '/user/update-info',
+			type: 'put',
+			data: userInfo,
+			success: function(result) {
+				$('.user-modal-alert-success').css('display', 'none');
+				$('.user-modal-alert-error').css('display', 'none');
+				// Display success
+				$('.user-modal-alert-success').find('span').text(result.message);
+				$('.user-modal-alert-success').css('display', 'block');
+
+				// Update origin user info
+				originUserInfo = Object.assign(originUserInfo, userInfo);
+
+				// Update username at navbar
+				$('#navbar-username').text(originUserInfo.username);
+				
+				// Refesh all
+				$('#input-btn-cancel-update-user').click();
+			},
+			error: function(err) {
+				$('.user-modal-alert-success').css('display', 'none');
+				$('.user-modal-alert-error').css('display', 'none');
+				// Display error
+				$('.user-modal-alert-error').find('span').text(err.responseText);
+				$('.user-modal-alert-error').css('display', 'block');
+				// Refesh all
+				$('#input-btn-cancel-update-user').click();
+			}
+		});
+}
+
+$(document).ready(function() {
+	originAvatarSrc = $('#user-modal-avatar').attr('src')
+	originUserInfo = {
+		username: $('#input-change-username').val(),
+		gender: $('#input-change-gender-male').is(':checked') ? $('#input-change-gender-male').val() : $('#input-change-gender-female').val(),
+		address: $('#input-change-address').val(),
+		phone: $('#input-change-phone').val()
+	}
+
+	// Update user info after changing value
+	updateUserInfo();
+
+	$('#input-btn-update-user').bind('click', function() {
+		if ($.isEmptyObject(userInfo) && !userAvatar) {
+			alertify.notify('Bạn phải thay đổi thông tin trước khi cập nhật dữ liệu', 'error', 5);
+			return false;
+		}
+		
+		if (userAvatar) {
+			// Send a ajax request to server
+			callUpdateUserAvatar();
+		}
+
+		if (!$.isEmptyObject(userInfo)) {
+			callUpdateUserInfo();
+		}
 	});
 
 	$('#input-btn-cancel-update-user').bind('click', function() {
@@ -122,5 +203,9 @@ $(document).ready(function() {
 		userInfo = {};
 		$('#input-change-avatar').val(null);
 		$('#user-modal-avatar').attr('src', originAvatarSrc);
+		$('#input-change-username').val(originUserInfo.username)
+		originUserInfo.gender === $('#input-change-gender-male').val() ? $('#input-change-gender-male').click() : $('#input-change-gender-female').click();
+		$('#input-change-address').val(originUserInfo.address);
+		$('#input-change-phone').val(originUserInfo.phone);
 	})
 })
