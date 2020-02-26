@@ -23,6 +23,17 @@ let getNotifications = (currentUserId, limit = 10) => {
   });
 }
 
+let countUnreaded = (currentUserId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      resolve(await NotificationModel.model.countUnreaded(currentUserId));
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
-  getNotifications: getNotifications
+  getNotifications: getNotifications,
+  countUnreaded: countUnreaded
 }
