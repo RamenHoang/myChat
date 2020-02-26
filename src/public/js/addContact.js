@@ -1,10 +1,3 @@
-function increaseNumberNotifContact(classname) {
-	let currentValue = parseInt($(`.${classname}`).find('em').text(), 10);
-	if (!currentValue) currentValue = 0;
-	currentValue++;
-	$(`.${classname}`).html(`(<em>${currentValue}</em>)`);
-}
-
 function addContact() {
 	$('.user-add-new-contact').bind('click', function() {
 		let targetId = $(this).data('uid');
@@ -21,5 +14,17 @@ function addContact() {
 		});
 	});
 }
+
+socket.on('response-add-new-contact', function(user) {
+	let notif = `<span data-uid="${user.id}">
+								<img class="avatar-small" src="images/users/${user.avatar}" alt=""> 
+								<strong>${user.username}</strong> đã chấp nhận lời mời kết bạn của bạn!
+							</span><br><br><br>`;
+	$('.noti_content').prepend(notif);
+
+	increaseNumberNotification('noti_contact_counter');
+	increaseNumberNotification('noti_counter');
+	increaseNumberNotifContact('count-request-contact-received');
+});
 
 
