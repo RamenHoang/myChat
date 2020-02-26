@@ -19,7 +19,6 @@ let initRoutes = (app) => {
 	router.get('/login-register', authValid.checkLoggedOut, auth.getLoginRegister);
 	router.get('/logout', authValid.checkLoggedIn, auth.getLogout);
 	router.get('/verify/:token', authValid.checkLoggedOut, auth.getVerifyAccount);
-	router.get('/contact/find-users/:keyword', authValid.checkLoggedIn, contactValid.findUserContact, contact.findUsersContact);
 
 	router.post('/register', authValid.checkLoggedOut, authValid.register, auth.postRegister);
 	router.post('/login', authValid.checkLoggedOut, passport.authenticate('local', {
@@ -32,6 +31,10 @@ let initRoutes = (app) => {
 	router.put('/user/update-avatar', authValid.checkLoggedIn, user.updateAvatar);
 	router.put('/user/update-info', authValid.checkLoggedIn, userValid.updateInfo, user.updateInfo);
 	router.put('/user/update-password', userValid.updatePassword, user.updatePassword);
+
+	router.get('/contact/find-users/:keyword', authValid.checkLoggedIn, contactValid.findUserContact, contact.findUsersContact);
+	router.post('/contact/add-new', authValid.checkLoggedIn, contact.addNew);
+	router.delete('/contact/remove-request-contact', authValid.checkLoggedIn, contact.removeRequestContact);
 
 	app.use('/', router);
 }
