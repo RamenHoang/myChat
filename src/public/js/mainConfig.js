@@ -1,6 +1,7 @@
 /**
  * Created by https://trungquandev.com's author on 25/02/2018.
  */
+const socket = io();
 
 function flashMasterNotify() {
   let notify = $('.master-success-message').text();

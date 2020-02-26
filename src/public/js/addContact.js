@@ -16,6 +16,7 @@ function addContact() {
 
 				increaseNumberNotifContact('count-request-contact-sent')
 				// Xử lý realtime
+				socket.emit('add-new-contact', {contactId: targetId});
 			}
 		});
 	});
