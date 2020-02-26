@@ -26,9 +26,9 @@ let UserSchema = new Schema({
 								token: 	String,
 								email: 	{ type: String, trim: true }
 							},
-	createdAt: 	{ type: Date, default: Date.now },
-	updatedAt: 	{ type: Date, default: null },
-	deletedAt: 	{ type: Date, default: null }
+	createdAt: 	{ type: Number, default: Date.now },
+	updatedAt: 	{ type: Number, default: null },
+	deletedAt: 	{ type: Number, default: null }
 });
 
 UserSchema.statics = {
@@ -70,24 +70,24 @@ UserSchema.statics = {
 	 */
 	findAllForAddContact(beFriendUserIds, keyword) {
 		return this.find({
-												$and: [
-																{ '_id': { $nin: beFriendUserIds } },
-																{ 'local.isActive': true },
-																{ $or: [
-																		{ 'username': { '$regex': keyword } },
-																		{ 'local.email': { '$regex': keyword } },
-																		{ 'facebook.email': { '$regex': keyword } },
-																		{ 'google.email': { '$regex': keyword } }
-																	] 
-																}
-															]
-											},
-											{
-												_id: 1,
-												username: 1,
-												address: 1,
-												avatar: 1
-											}).exec();
+			$and: [
+				{ '_id': { $nin: beFriendUserIds } },
+				{ 'local.isActive': true },
+				{ $or: [
+						{ 'username': { '$regex': new RegExp(keyword, 'i') } },
+						{ 'local.email': { '$regex': new RegExp(keyword, 'i') } },
+						{ 'facebook.email': { '$regex': new RegExp(keyword, 'i') } },
+						{ 'google.email': { '$regex': new RegExp(keyword, 'i') } }
+					] 
+				}
+			]
+		},
+		{
+			_id: 1,
+			username: 1,
+			address: 1,
+			avatar: 1
+		}).exec();
 	}
 }
 

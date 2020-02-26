@@ -6,9 +6,9 @@ let ContactSchema = new Schema({
 	userId: 		String,
 	contactId: 	String,
 	status: 		{type: Boolean, default: false},
-	createdAt: 	{type: Date, default: Date.now},
-	updatedAt: 	{type: Date, default: null},
-	deletedAt: 	{type: Date, default: null}
+	createdAt: 	{type: Number, default: Date.now},
+	updatedAt: 	{type: Number, default: null},
+	deletedAt: 	{type: Number, default: null}
 });
 
 ContactSchema.statics = {
@@ -25,6 +25,38 @@ ContactSchema.statics = {
 			$or: [
 				{ 'userId': userId },
 				{ 'contactId': userId }
+			]
+		}).exec();
+	}, 
+	/**
+	 * [checkExist Check 2 id have relation]
+	 * @param  {[type]} userId    [description]
+	 * @param  {[type]} contactId [description]
+	 * @return {[type]}           [description]
+	 */
+	checkExist(userId, contactId) {
+		return this.findOne({
+			$or: [
+				{
+					$and: [
+						{'userId': userId},
+						{'contactId': contactId}
+					]
+				},
+				{	
+					$and: [
+						{'contactId': userId},
+						{'userId': contactId}
+					]
+				}
+			]
+		}).exec();
+	},
+	removeRequestContact(userId, contactId) {
+		return this.deleteOne({
+			$and: [
+				{ 'userId': userId },
+				{ 'contactId': contactId }
 			]
 		}).exec();
 	}
