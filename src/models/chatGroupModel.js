@@ -8,9 +8,9 @@ let ChatGroupSchema = new Schema({
 	messageAmount: 	{type: Number, default: 0},
 	userId: 				String,
 	members: 				[ {userId: String} ],
-	createdAt: 			{type: Date, default: Date.now},
-	updatedAt: 			{type: Date, default: null},
-	deletedAt: 			{type: Date, default: null}
+	createdAt: 			{type: Number, default: Date.now},
+	updatedAt: 			{type: Number, default: null},
+	deletedAt: 			{type: Number, default: null}
 });
 
 module.exports = mongoose.model('chatGroup', ChatGroupSchema);
