@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+const LIMIT_NUMBER_TAKEN = 7;
 let Schema = mongoose.Schema;
 
 let NotificationSchema = new Schema({
@@ -28,10 +29,10 @@ NotificationSchema.statics = {
 	 * @param {String} userId 
 	 * @param {Number} limit 
 	 */
-	getByUserIdAndLimit(userId, limit) {
+	getByUserIdAndLimit(userId) {
 		return this.find({
 			'receiverId': userId
-		}).sort({'createdAt': -1}).limit(limit).exec();
+		}).sort({'createdAt': -1}).limit(LIMIT_NUMBER_TAKEN).exec();
 	},
 	countUnreaded(currentUserId) {
 		return this.countDocuments({
@@ -40,6 +41,22 @@ NotificationSchema.statics = {
 				{'isRead': false}
 			]
 		}).exec();
+	}
+	,readMore(userId, skipNumberNotification) {
+		return this.find({
+			'receiverId': userId
+		}).sort({'createdAt': -1}).skip(skipNumberNotification).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	markAsReaded(userId, targetUsers) {
+		return this.updateMany(
+			{
+				$and: [
+					{'receiverId': userId},
+					{'senderId': {$in: targetUsers}}
+				]
+			},
+			{'isRead': true}	
+		).exec();
 	}
 }
 

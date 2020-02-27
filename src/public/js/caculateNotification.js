@@ -15,16 +15,16 @@ function decreaseNumberNotifContact(classname) {
 	}
 }
 
-function increaseNumberNotification(classname) {
+function increaseNumberNotification(classname, number) {
   let currentValue = parseInt($(`.${classname}`).text(), 10);
 	if (!currentValue) currentValue = 0;
-	currentValue++;
+	currentValue += number;
 	$(`.${classname}`).css('display', 'block').html(currentValue);
 }
 
-function decreaseNumberNotification(classname) {
+function decreaseNumberNotification(classname, number) {
   let currentValue = parseInt($(`.${classname}`).text(), 10);
-	currentValue--;
+	currentValue -= number;
 	if (currentValue === 0) {
 		$(`.${classname}`).css('display', 'none').html(null);
 	} else {
