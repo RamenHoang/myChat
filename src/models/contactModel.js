@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+const LIMIT_NUMBER_TAKEN = 10;
 let Schema = mongoose.Schema;
 
 let ContactSchema = new Schema({
@@ -59,6 +60,76 @@ ContactSchema.statics = {
 				{ 'contactId': contactId }
 			]
 		}).exec();
+	},
+	getContact(userId) {
+		return this.find(
+			{
+				$and: [
+					{
+						$or: [
+							{'userId': userId},
+							{'contactId': userId}
+						]
+					},
+					{'status': true}
+				]
+			}	
+		).sort({'createdAt': -1}).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	getContactSent(userId) {
+		return this.find(
+			{
+				$and: [
+					{'userId': userId},
+					{'status': false}
+				]
+			}	
+		).sort({'createdAt': -1}).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	getContactReceived(userId) {
+		return this.find(
+			{
+				$and: [
+					{'contactId': userId},
+					{'status': false}
+				]
+			}	
+		).sort({'createdAt': -1}).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	countAllContactsReceived(userId) {
+		return this.countDocuments(
+			{
+				$and: [
+					{'contactId': userId},
+					{'status': false}
+				]
+			}	
+		).exec();
+	},
+	countAllContacts(userId) {
+		return this.countDocuments(
+			{
+				$and: [
+					{
+						$or: [
+							{'userId': userId},
+							{'contactId': userId}
+						]
+					},
+					{'status': true}
+				]
+			}	
+		).exec();
+	},
+	countAllContactsSent(userId) {
+		return this.countDocuments(
+			{
+				$and: [
+					{'userId': userId},
+					{'status': false}
+				]
+			}	
+		).exec();
 	}
 };
 

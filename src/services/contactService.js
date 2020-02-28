@@ -63,9 +63,94 @@ let removeRequestContact = (userId, contactId) => {
 	});
 }
 
+let getContact = (userId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let contacts = await ContactModel.getContact(userId);
+			contacts = contacts.map(async (contact) => {
+				if (contact.contactId == userId)
+					return await UserModel.findUserById(contact.userId);
+				return await UserModel.findUserById(contact.contactId);
+			});
+
+			resolve(await Promise.all(contacts));
+		} catch (error) {
+			console.log('Get contact error: ', error);
+			reject(error)
+		}
+	});
+}
+
+let getContactSent = (userId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let contacts = await ContactModel.getContactSent(userId);
+			contacts = contacts.map(async (contact) => {
+				return await UserModel.findUserById(contact.contactId);
+			});
+
+			resolve(await Promise.all(contacts));
+		} catch (error) {
+			console.log('Get contact sent error: ', error);
+			reject(error)
+		}
+	});
+}
+
+let getContactReceived = (userId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let contacts = await ContactModel.getContactReceived(userId);
+			contacts = contacts.map(async (contact) => {
+				return await UserModel.findUserById(contact.userId);
+			});
+
+			resolve(await Promise.all(contacts));
+		} catch (error) {
+			console.log('Get contact received error: ', error);
+			reject(error)
+		}
+	});
+}
+
+let countAllContacts = (userId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			resolve(await ContactModel.countAllContacts(userId));
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+let countAllContactsSent = (userId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			resolve(await ContactModel.countAllContactsSent(userId));
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+let countAllContactsReceived = (userId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			resolve(await ContactModel.countAllContactsReceived(userId));
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
+
 module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
-	removeRequestContact: removeRequestContact
+	removeRequestContact: removeRequestContact,
+	getContact: getContact,
+	getContactSent: getContactSent,
+	getContactReceived: getContactReceived,
+	countAllContactsReceived: countAllContactsReceived,
+	countAllContacts: countAllContacts,
+	countAllContactsSent: countAllContactsSent
 }
 
