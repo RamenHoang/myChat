@@ -1332,7 +1332,7 @@ label:focus,
   float: right;
 }
 
-.read-more-notif {
+.read-more-notif, .read-more-contact, .read-more-contact-sent, .read-more-contact-received {
   display: flex;
   width: 90%;
   height: auto;
@@ -1340,6 +1340,6 @@ label:focus,
   margin: 0 auto;
 }
 
-.read-more-notif a {
+.read-more-notif a, .read-more-contact a, .read-more-contact-sent a, .read-more-contact-received a {
   margin: auto;
 }
