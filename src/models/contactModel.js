@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const LIMIT_NUMBER_TAKEN = 10;
+const LIMIT_NUMBER_TAKEN = 1;
 let Schema = mongoose.Schema;
 
 let ContactSchema = new Schema({
@@ -130,6 +130,41 @@ ContactSchema.statics = {
 				]
 			}	
 		).exec();
+	},
+	readMoreContact(userId, skip) {
+		return this.find(
+			{
+				$and: [
+					{
+						$or: [
+							{'userId': userId},
+							{'contactId': userId}
+						]
+					},
+					{'status': true}
+				]
+			}
+		).sort({'createdAt': -1}).skip(skip).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	readMoreContactSent(userId, skip) {
+		return this.find(
+			{
+				$and: [
+					{'userId': userId},
+					{'status': false}
+				]
+			}
+		).sort({'createdAt': -1}).skip(skip).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	readMoreContactReceived(userId, skip) {
+		return this.find(
+			{
+				$and: [
+					{'contactId': userId},
+					{'status': false}
+				]
+			}
+		).sort({'createdAt': -1}).skip(skip).limit(LIMIT_NUMBER_TAKEN).exec();
 	}
 };
 

@@ -88,6 +88,9 @@ UserSchema.statics = {
 			address: 1,
 			avatar: 1
 		}).exec();
+	},
+	getNormalUserDataById(userId) {
+		return this.findById(userId, {_id: 1, username: 1, address: 1, avatar: 1}).exec();
 	}
 }
 
