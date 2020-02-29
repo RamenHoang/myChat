@@ -20,9 +20,20 @@ NotificationSchema.statics = {
 			$and: [
 				{'senderId': senderId},
 				{'receiverId': receiverId},
-				{'type': type}
+				{'receiverId': type}
 			]
 		}).exec();
+	},
+	removeRequestContactReceivedNotification(senderId, receiverId, type) {
+		return this.deleteOne(
+			{
+				$and: [
+					{'senderId': senderId},
+					{'receiverId': receiverId},
+					{'type': type}
+				]
+			}
+		).exec();
 	},
 	/**
 	 * Get limit notification to fetch to view

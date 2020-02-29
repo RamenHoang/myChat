@@ -63,6 +63,21 @@ let removeRequestContactSent = (userId, contactId) => {
 	});
 }
 
+let removeRequestContactReceived = (userId, contactId) => {
+	return new Promise(async (resolve, reject) => {
+		let contactExist = await ContactModel.checkExist(userId, contactId);
+		if (!contactExist) {
+			return reject(false);
+		}
+
+		let removeStatus = await ContactModel.removeRequestContactReceived(userId, contactId);
+
+		// Remove notification
+		await NotifictionModel.model.removeRequestContactReceivedNotification(contactId, userId, NotifictionModel.types.ADD_CONTACT);
+		resolve(removeStatus.n);
+	});
+}
+
 let getContact = (userId) => {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -194,6 +209,7 @@ module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
 	removeRequestContactSent: removeRequestContactSent,
+	removeRequestContactReceived: removeRequestContactReceived,
 	getContact: getContact,
 	getContactSent: getContactSent,
 	getContactReceived: getContactReceived,
