@@ -41,7 +41,6 @@ $(document).ready(function() {
   $('#link-read-more-contact-sent').bind('click', function() {
     let skipNumber = $('#request-contact-sent ul.contactList').find('li').length;
 
-    console.log(skipNumber);
     $.get(`/contact/read-more-contact-sent?skipNumber=${skipNumber}`, function(contacts) {
       if (contacts.length === 0) {
         alertify.notify('Đã hiển thị hết tất cả yêu cầu', 'error', 5);
@@ -69,10 +68,13 @@ $(document).ready(function() {
               </div>
           </li>`
         );
-      });
+      }
+      );
+      // Cho phép huỷ đi yêu cầu vừa đươc tạo ra ở tab "đang chờ xác nhận"
+      removeRequestContactSent();
     });
   });
-
+  
   // Contact's request received 
   $('#link-read-more-contact-received').bind('click', function() {
     let skipNumber = $('#request-contact-received ul.contactList').find('li').length;
