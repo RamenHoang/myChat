@@ -27,14 +27,14 @@ let initRoutes = (app) => {
 		successFlash: true,
 		failureFlash: true
 	}));
-	
+
 	router.put('/user/update-avatar', authValid.checkLoggedIn, user.updateAvatar);
 	router.put('/user/update-info', authValid.checkLoggedIn, userValid.updateInfo, user.updateInfo);
 	router.put('/user/update-password', userValid.updatePassword, user.updatePassword);
 
 	router.get('/contact/find-users/:keyword', authValid.checkLoggedIn, contactValid.findUserContact, contact.findUsersContact);
 	router.post('/contact/add-new', authValid.checkLoggedIn, contact.addNew);
-	router.delete('/contact/remove-request-contact', authValid.checkLoggedIn, contact.removeRequestContact);
+	router.delete('/contact/remove-request-contact-sent', authValid.checkLoggedIn, contact.removeRequestContactSent);
 	router.get('/contact/read-more-contact', authValid.checkLoggedIn, contact.readMoreContact);
 	router.get('/contact/read-more-contact-sent', authValid.checkLoggedIn, contact.readMoreContactSent);
 	router.get('/contact/read-more-contact-received', authValid.checkLoggedIn, contact.readMoreContactReceived);

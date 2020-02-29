@@ -5,14 +5,17 @@ function addContact() {
 		$.post('/contact/add-new', { uid: targetId }, function(data) {
 			if (data.success) {
 				$('#find-user').find(`div.user-add-new-contact[data-uid=${targetId}]`).hide();
-				$('#find-user').find(`div.user-remove-request-contact[data-uid=${targetId}]`).css('display', 'inline-block');
+				$('#find-user').find(`div.user-remove-request-contact-sent[data-uid=${targetId}]`).css('display', 'inline-block');
 
 				// Thêm ở tab "đang chờ xác nhận"
 				increaseNumberNotifContact('count-request-contact-sent')
 
+				
 				let userInfoHtml = $('#find-user').find(`ul li[data-uid=${targetId}]`).get(0).outerHTML;
 				
 				$('#request-contact-sent').find('ul').prepend(userInfoHtml);
+				// Cho phép huỷ đi yêu cầu vừa đươc tạo ra ở tab "đang chờ xác nhận"
+				removeRequestContactSent();
 				// Xử lý realtime
 				socket.emit('add-new-contact', {contactId: targetId});
 			}
