@@ -45,6 +45,19 @@ let removeRequestContactSent = async (req, res) => {
 	}
 }
 
+let removeRequestContactReceived = async (req, res) => {
+	try {
+		let currentUserId = req.user._id;
+		let contactId = req.body.uid;
+
+		let deleteStatus = await contact.removeRequestContactReceived(currentUserId, contactId);
+
+		return res.status(200).send({ success: !!deleteStatus });
+	} catch(error) {
+		res.status(500).send(error);
+	}
+}
+
 let readMoreContact = async (req, res) => {
 	try {
 		let skip = parseInt(req.query.skipNumber, 10);
@@ -82,6 +95,7 @@ module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
 	removeRequestContactSent: removeRequestContactSent,
+	removeRequestContactReceived: removeRequestContactReceived,
 	readMoreContact: readMoreContact,
 	readMoreContactSent: readMoreContactSent,
 	readMoreContactReceived: readMoreContactReceived

@@ -7,7 +7,12 @@ function removeSent(targetId) {
 			if (data.success) {
 				$('#find-user').find(`div.user-add-new-contact[data-uid=${targetId}]`).css('display', 'inline-block');
 				$('#find-user').find(`div.user-remove-request-contact-sent[data-uid=${targetId}]`).hide();
+
+				// Bớt ở tab "Đang chờ xác nhận"
 				decreaseNumberNotifContact('count-request-contact-sent');
+
+				// Bớt ở navbar
+				decreaseNumberNotification('noti_contact_counter', 1);
 
 				// Xoá ở tab "Đang chờ xác nhận"
 				$('#request-contact-sent').find(`li[data-uid=${targetId}]`).remove();

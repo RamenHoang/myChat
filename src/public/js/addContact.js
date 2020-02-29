@@ -8,7 +8,10 @@ function addContact() {
 				$('#find-user').find(`div.user-remove-request-contact-sent[data-uid=${targetId}]`).css('display', 'inline-block');
 
 				// Thêm ở tab "đang chờ xác nhận"
-				increaseNumberNotifContact('count-request-contact-sent')
+				increaseNumberNotifContact('count-request-contact-sent');
+
+				// Thêm ở navbar
+				increaseNumberNotification('noti_contact_counter', 1);
 
 				
 				let userInfoHtml = $('#find-user').find(`ul li[data-uid=${targetId}]`).get(0).outerHTML;
@@ -60,6 +63,8 @@ socket.on('response-add-new-contact', function(user) {
 		</div>
 	</li>`;
 	$('#request-contact-received').find('ul').prepend(userInfoHtml);
+	// Cho phép huỷ yêu cầu kết bạn
+	removeRequestContactReceived();
 });
 
 
