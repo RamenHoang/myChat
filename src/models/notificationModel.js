@@ -72,7 +72,8 @@ NotificationSchema.statics = {
 }
 
 const NOTIFICATION_TYPES = {
-	ADD_CONTACT: 'add contact'
+	ADD_CONTACT: 'add contact',
+	ACCEPT_CONTACT: 'accept contact'
 }
 
 const NOTIFICATION_CONTENTS = {
@@ -87,6 +88,18 @@ const NOTIFICATION_CONTENTS = {
 			return `<div data-uid="${userId}" class="notif-readed-false">
 								<img class="avatar-small" src="images/users/${avatar}" alt=""> 
 								<strong>${username}</strong> đã gửi một lời mời kết bạn!
+							</div>`;
+		}
+		if (notificationType === NOTIFICATION_TYPES.ACCEPT_CONTACT) {
+			if (isRead) {
+				return `<div data-uid="${userId}">
+									<img class="avatar-small" src="images/users/${avatar}" alt=""> 
+									<strong>${username}</strong> đã chấp nhận kết bạn!
+								</div>`;
+			}
+			return `<div data-uid="${userId}" class="notif-readed-false">
+								<img class="avatar-small" src="images/users/${avatar}" alt=""> 
+								<strong>${username}</strong> đã chấp nhận kết bạn!
 							</div>`;
 		}
 		return 'No matching with any notification type';

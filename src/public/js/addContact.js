@@ -65,6 +65,8 @@ socket.on('response-add-new-contact', function(user) {
 	$('#request-contact-received').find('ul').prepend(userInfoHtml);
 	// Cho phép huỷ yêu cầu kết bạn
 	removeRequestContactReceived();
+	// Cho phép chấp nhận yêu cầu kết bạn
+	acceptRequestContact();
 });
 
 

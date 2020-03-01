@@ -91,6 +91,15 @@ let readMoreContactReceived = async (req, res) => {
 	}
 }
 
+let acceptRequestContact = async (req, res) => {
+	try {
+		let acceptedData = await contact.acceptRequestContact(req.user._id, req.body.uid);
+		res.status(200).send(acceptedData);
+	} catch (error) {
+		res.status(500).send(error);
+	}
+}
+
 module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
@@ -98,5 +107,6 @@ module.exports = {
 	removeRequestContactReceived: removeRequestContactReceived,
 	readMoreContact: readMoreContact,
 	readMoreContactSent: readMoreContactSent,
-	readMoreContactReceived: readMoreContactReceived
+	readMoreContactReceived: readMoreContactReceived,
+	acceptRequestContact: acceptRequestContact
 }
