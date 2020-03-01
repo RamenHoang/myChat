@@ -110,6 +110,10 @@ $(document).ready(function() {
             </li>`
         );
       });
+      // Cho phép huỷ những yêu cầu kết bạn
+      removeRequestContactReceived();
+      // Cho phép chấp nhận yêu cầu kết bạn
+      acceptRequestContact();
     });
   });
 });

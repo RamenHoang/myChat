@@ -175,6 +175,18 @@ ContactSchema.statics = {
 				]
 			}
 		).sort({'createdAt': -1}).skip(skip).limit(LIMIT_NUMBER_TAKEN).exec();
+	},
+	acceptRequestContact(userId, contactId) {
+		return this.findOneAndUpdate(
+			{
+				'userId': contactId,
+				'contactId': userId,
+				'status': false
+			},
+			{
+				'status': true
+			}
+		).exec();
 	}
 };
 

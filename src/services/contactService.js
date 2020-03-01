@@ -204,6 +204,25 @@ let readMoreContactReceived = (userId, skip) => {
 	});
 }
 
+let acceptRequestContact = (userId, contactId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			await ContactModel.acceptRequestContact(userId, contactId);
+			// create notification
+			let notificationItem = {
+				senderId: userId,
+				receiverId: contactId,
+				type: NotifictionModel.types.ACCEPT_CONTACT
+			}
+
+			await NotifictionModel.model.createNew(notificationItem);
+			resolve(true);
+		} catch (error) {
+			console.log('Accept Error:', error);
+			reject(error);
+		}
+	});
+}
 
 module.exports = {
 	findUsersContact: findUsersContact,
@@ -218,6 +237,7 @@ module.exports = {
 	countAllContactsReceived: countAllContactsReceived,
 	readMoreContact: readMoreContact,
 	readMoreContactSent: readMoreContactSent,
-	readMoreContactReceived: readMoreContactReceived
+	readMoreContactReceived: readMoreContactReceived,
+	acceptRequestContact: acceptRequestContact
 }
 
