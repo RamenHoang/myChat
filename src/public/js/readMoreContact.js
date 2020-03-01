@@ -34,6 +34,8 @@ $(document).ready(function() {
           </li>`
         );
       });
+      // Cho phép xoá danh bạ
+      removeContact();
     });
   });
 
@@ -85,7 +87,7 @@ $(document).ready(function() {
         return;
       }
       contacts.forEach(function(contact) {
-        $('#request-contact-received>ul.contactList').append(
+        $('#request-contact-received ul.contactList').append(
           `<li class="_contactList" data-uid="${contact.id}">
               <div class="contactPanel">
                   <div class="user-avatar">
