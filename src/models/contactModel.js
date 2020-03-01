@@ -187,6 +187,27 @@ ContactSchema.statics = {
 				'status': true
 			}
 		).exec();
+	},
+	removeContact(userId, contactId) {
+		return this.deleteOne(
+			{
+				$and: [
+					{
+						$or: [
+							{
+								'userId': userId,
+								'contactId': contactId
+							},
+							{
+								'userId': contactId,
+								'contactId': userId
+							}
+						]
+					},
+					{ 'status': true }
+				]
+			}
+		).exec();
 	}
 };
 

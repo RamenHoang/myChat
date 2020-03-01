@@ -308,8 +308,8 @@ $(document).ready(function() {
 		  text: "Bạn có đồng ý thay đổi mật khẩu không?",
 		  icon: 'warning',
 		  showCancelButton: true,
-		  confirmButtonColor: '#3085d6',
-		  cancelButtonColor: '#d33',
+		  confirmButtonColor: '#2ACC77',
+		  cancelButtonColor: '#ff7675',
 		  confirmButtonText: 'Có',
 		  cancelButtonText: 'Không'
 		}).then((result) => {

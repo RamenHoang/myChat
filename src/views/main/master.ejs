@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Awesome Chat</title>
     <meta charset="UTF-8">
@@ -14,16 +15,17 @@
 
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body onload="spinLoaded()">
     <!--Icon loader-->
     <div id="loader"></div>
-    
+
     <%- include('alert/alert'); %>
 
     <%- include('navbar/navbar'); %>
-    
+
     <%- content %>
-    
+
 
     <!--Libraries-->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -52,20 +54,22 @@
     <script src="js/findUsersContact.js"></script>
     <script src="js/readMoreContact.js"></script>
     <script src="js/acceptRequestContact.js"></script>
+    <script src="js/removeContact.js"></script>
 
     <%- include('contact/contactModal'); %>
-    
+
     <%- include('stream/streamModal'); %>
-        
+
     <%- include('images/imagesModal'); %>
-    
+
     <%- include('attachs/attachsModal'); %>
-        
+
     <%- include('userProfile/userProfileModal'); %>
 
     <%- include('groupChat/groupChatModal'); %>
 
     <%- include('notification/notificationModal') %>
-    
+
 </body>
+
 </html>

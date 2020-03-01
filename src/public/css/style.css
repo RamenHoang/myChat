@@ -1343,3 +1343,19 @@ label:focus,
 .read-more-notif a, .read-more-contact a, .read-more-contact-sent a, .read-more-contact-received a {
   margin: auto;
 }
+
+.swal2-title {
+  font-size: 30px !important;
+}
+
+.swal2-icon {
+  font-size: 15px !important;
+}
+
+.swal2-content {
+  font-size: 14px !important;
+}
+
+.swal2-styled {
+  font-size: 14px !important;
+}

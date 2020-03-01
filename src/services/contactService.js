@@ -162,9 +162,9 @@ let readMoreContact = (userId, skip) => {
 			let newContacts = await ContactModel.readMoreContact(userId, skip);
 			newContacts = newContacts.map(async (contact) => {
 				if (userId == contact.contactId) {
-					return UserModel.findAllByUserId(contact.userId);
+					return await UserModel.getNormalUserDataById(contact.userId);
 				}
-				return UserModel.getNormalUserDataById(contact.contactId);
+				return await UserModel.getNormalUserDataById(contact.contactId);
 			});
 
 			resolve(await Promise.all(newContacts));
@@ -178,8 +178,10 @@ let readMoreContactSent = (userId, skip) => {
 		try {
 			let newContacts = await ContactModel.readMoreContactSent(userId, skip);
 			
+			console.log(newContacts);
+
 			newContacts = newContacts.map(async (contact) => {
-				return UserModel.getNormalUserDataById(contact.contactId);
+				return await UserModel.getNormalUserDataById(contact.contactId);
 			});
 
 			resolve(await Promise.all(newContacts));
@@ -192,9 +194,9 @@ let readMoreContactReceived = (userId, skip) => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			let newContacts = await ContactModel.readMoreContactReceived(userId, skip);
-			
+
 			newContacts = newContacts.map(async (contact) => {
-				return UserModel.getNormalUserDataById(contact.userId);
+				return await UserModel.getNormalUserDataById(contact.userId);
 			});
 
 			resolve(await Promise.all(newContacts));
@@ -224,6 +226,18 @@ let acceptRequestContact = (userId, contactId) => {
 	});
 }
 
+let removeContact = (userId, contactId) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let deleteStatus = await ContactModel.removeContact(userId, contactId);
+			resolve(deleteStatus);
+		} catch (error) {
+			console.log('Remove contact error: ', error);
+			reject(error);
+		}
+	});
+}
+
 module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
@@ -238,6 +252,7 @@ module.exports = {
 	readMoreContact: readMoreContact,
 	readMoreContactSent: readMoreContactSent,
 	readMoreContactReceived: readMoreContactReceived,
-	acceptRequestContact: acceptRequestContact
+	acceptRequestContact: acceptRequestContact,
+	removeContact: removeContact
 }
 

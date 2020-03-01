@@ -26,6 +26,9 @@ function accceptContact(targetId) {
         $('#contacts').find('ul.contactList').prepend($(contactPanel).get(0).outerHTML);
         $(contactPanel).remove();
 
+        // Cho phép xoá danh bạ
+        removeContact();
+        
         // Tăng số danh bạ ở tab "Danh bạ"
         increaseNumberNotifContact('count-contacts');
 
@@ -39,7 +42,6 @@ function accceptContact(targetId) {
 function acceptRequestContact() {
   $('.user-acccept-contact-received').unbind('click').on('click', function() {
     let targetId = $(this).data('uid');
-
     // Put lên server để cập nhật lại status của danh bạ
     accceptContact(targetId);
   });
@@ -86,6 +88,8 @@ socket.on('response-accept-request-contact', function(user) {
     </li>`;
   
   $('#contacts ul.contactList').prepend(contactPanelHTML);
+  // Cho phép xoá danh bạ
+  removeContact();
   increaseNumberNotifContact('count-contacts', 1);
 });
 

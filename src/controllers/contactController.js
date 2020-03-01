@@ -85,6 +85,7 @@ let readMoreContactReceived = async (req, res) => {
 		let skip = parseInt(req.query.skipNumber, 10);
 		if (!skip) skip = 0;
 		let newContacts = await contact.readMoreContactReceived(req.user._id, skip);
+
 		res.status(200).send(newContacts);
 	} catch (error) {
 		res.status(500).send(error);
@@ -100,6 +101,19 @@ let acceptRequestContact = async (req, res) => {
 	}
 }
 
+let removeContact = async (req, res) => {
+	try {
+		let deleteStatus = await contact.removeContact(req.user._id, req.body.uid);
+		if (deleteStatus.n) {
+			res.status(200).send({ success: true });
+		} else {
+			console.log('error from removeContact at Controller');
+		}
+	} catch (error) {
+		res.status(500).send(error);
+	}
+}
+
 module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
@@ -108,5 +122,6 @@ module.exports = {
 	readMoreContact: readMoreContact,
 	readMoreContactSent: readMoreContactSent,
 	readMoreContactReceived: readMoreContactReceived,
-	acceptRequestContact: acceptRequestContact
+	acceptRequestContact: acceptRequestContact,
+	removeContact: removeContact
 }
