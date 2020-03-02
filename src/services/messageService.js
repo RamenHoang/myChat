@@ -1,32 +1,55 @@
 import ContactModel from '../models/contactModel';
 import UserModel from '../models/userModel';
 import ChatGroupModel from '../models/chatGroupModel';
+import MessageModel from '../models/messageModel';
 
-let getAllConversasionItems = (userId) => {
+let getAllConversations = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let conversasions = await ContactModel.getContact(userId);
-      conversasions = conversasions.map(async (conversasion) => {
-        let conversasionItem;
-        if (conversasion.contactId == userId) {
-          conversasionItem =  await UserModel.getNormalUserDataById(conversasion.userId);
+      // Conversations include personal and group conversations
+      // => Get all contacts of current user as personal conversations
+      let conversations = await ContactModel.getContact(userId);
+      // => Extract only needed field {_id, username, avatar, address}
+      conversations = conversations.map(async (conversation) => {
+        let conversationItem;
+        if (conversation.contactId == userId) {
+          conversationItem =  await UserModel.getNormalUserDataById(conversation.userId);
         }
-        conversasionItem = await UserModel.getNormalUserDataById(conversasion.contactId);
-        conversasionItem.updatedAt = conversasion.updatedAt;
-        return conversasionItem;
+        conversationItem = await UserModel.getNormalUserDataById(conversation.contactId);
+        conversationItem.updatedAt = conversation.updatedAt;
+        return conversationItem;
       });
 
-      let userConversasions = await Promise.all(conversasions);
+      let userConversations = await Promise.all(conversations);
 
+      // => Get group conversations
       let groupConversations = await ChatGroupModel.getChatGroups(userId);
 
-      let allConversasions = userConversasions.concat(groupConversations).sort((a, b) => {
-        return -a.updatedAt + b.updatedAt;
+      // Join personal and group conversations to all conversations, descending sorted by updatedAt
+      let allConversations = userConversations.concat(groupConversations).sort((a, b) => {
+        return b.updatedAt - a.updatedAt;
       });
+
+      // => Push messages to each conversations
+      let allConversationsPromise = allConversations.map(async (conversation) => {
+        let getMessages = await MessageModel.model.getMessages(userId, conversation._id);
+        conversation = conversation.toObject();
+        conversation.messages = getMessages;
+        return conversation;
+      });
+
+      let allconversationWithMessages = await Promise.all(allConversationsPromise);
+
+      // => descending sorted all conversations by updatedAt again
+      allconversationWithMessages = allconversationWithMessages.sort((a, b) => {
+        return b.updatedAt - a.updatedAt;
+      });
+
       resolve({
-        userConversasions: userConversasions,
+        userConversations: userConversations,
         groupConversations: groupConversations,
-        allConversasions: allConversasions
+        allConversations: allConversations,
+        allconversationWithMessages: allconversationWithMessages
       });
     } catch (error) {
       console.log('Get contact error: ', error);
@@ -36,5 +59,5 @@ let getAllConversasionItems = (userId) => {
 }
 
 module.exports = {
-  getAllConversasionItems: getAllConversasionItems
+  getAllConversations: getAllConversations
 }
