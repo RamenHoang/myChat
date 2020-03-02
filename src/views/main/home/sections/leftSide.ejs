@@ -21,7 +21,13 @@
                                         <img src="images/users/group-avatar-trungquandev.png" alt="">
                                     </div>
                                     <div class="name">
-                                        <span class="group-chat-name">Group:</span> <%= conversasion.name %>
+                                        <span class="group-chat-name">
+                                            <% if (conversasion.name.length > 15) { %>
+                                                <%= conversasion.name.slice(0, 12) + '...' %>
+                                            <% } else { %>  
+                                                <%= conversasion.name %>
+                                            <% } %>
+                                        </span> 
                                     </div>
                                     <span class="time">Hai giờ trước</span>
                                     <span class="preview">Chào cả nhóm</span>
@@ -35,7 +41,11 @@
                                         <img src="images/users/<%= conversasion.avatar %>" alt="">
                                     </div>
                                     <div class="name">
-                                        <%= conversasion.username %>
+                                        <% if (conversasion.usernamelength > 15) { %>
+                                            <%= conversasion.username.slice(0, 12) + '...' %>
+                                        <% } else { %>  
+                                            <%= conversasion.username %>
+                                        <% } %>
                                     </div>
                                     <span class="time">Một phút trước</span>
                                     <span class="preview">Xin chào</span>
@@ -59,7 +69,11 @@
                                     <img src="images/users/<%= conversasion.avatar %>" alt="">
                                 </div>
                                 <div class="name">
-                                    <%= conversasion.username %>
+                                    <% if (conversasion.usernamelength > 15) { %>
+                                        <%= conversasion.username.slice(0, 12) + '...' %>
+                                    <% } else { %>  
+                                        <%= conversasion.username %>
+                                    <% } %>
                                 </div>
                                 <span class="time">Một phút trước</span>
                                 <span class="preview">Xin chào</span>
@@ -83,7 +97,13 @@
                                         <img src="images/users/group-avatar-trungquandev.png" alt="">
                                     </div>
                                     <div class="name">
-                                        <span class="group-chat-name">Group:</span> <%= conversasion.name %>
+                                        <span class="group-chat-name">
+                                            <% if (conversasion.name.length > 15) { %>
+                                                <%= conversasion.name.slice(0, 12) + '...' %>
+                                            <% } else { %>  
+                                                <%= conversasion.name %>
+                                            <% } %>
+                                        </span>
                                     </div>
                                     <span class="time">Hai giờ trước</span>
                                     <span class="preview">Chào cả nhóm</span>

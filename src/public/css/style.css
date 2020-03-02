@@ -749,7 +749,7 @@ label:focus,
 .left .people .person .time {
   font-size: 14px;
   position: absolute;
-  top: 12px;
+  bottom: 16px;
   right: 10%;
   padding: 0 0 5px 5px;
   color: #999;

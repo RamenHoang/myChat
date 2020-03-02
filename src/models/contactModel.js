@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const LIMIT_NUMBER_TAKEN = 5;
 const LIMIT_CONVERSASION_TAKEN = 5;
+
 let Schema = mongoose.Schema;
 
 let ContactSchema = new Schema({
@@ -85,7 +86,7 @@ ContactSchema.statics = {
 					{'status': true}
 				]
 			}	
-		).sort({'createdAt': -1}).limit(LIMIT_NUMBER_TAKEN).exec();
+		).sort({'updatedAt': -1}).limit(LIMIT_NUMBER_TAKEN).exec();
 	},
 	getContactSent(userId) {
 		return this.find(
@@ -155,7 +156,7 @@ ContactSchema.statics = {
 					{'status': true}
 				]
 			}
-		).sort({'createdAt': -1}).skip(skip).limit(LIMIT_NUMBER_TAKEN).exec();
+		).sort({'updatedAt': -1}).skip(skip).limit(LIMIT_NUMBER_TAKEN).exec();
 	},
 	readMoreContactSent(userId, skip) {
 		return this.find(
@@ -185,7 +186,8 @@ ContactSchema.statics = {
 				'status': false
 			},
 			{
-				'status': true
+				'status': true,
+				'updatedAt': Date.now()
 			}
 		).exec();
 	},

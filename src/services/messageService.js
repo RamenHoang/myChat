@@ -12,7 +12,7 @@ let getAllConversasionItems = (userId) => {
           conversasionItem =  await UserModel.getNormalUserDataById(conversasion.userId);
         }
         conversasionItem = await UserModel.getNormalUserDataById(conversasion.contactId);
-        conversasionItem.createdAt = conversasion.createdAt;
+        conversasionItem.updatedAt = conversasion.updatedAt;
         return conversasionItem;
       });
 
@@ -21,7 +21,7 @@ let getAllConversasionItems = (userId) => {
       let groupConversations = await ChatGroupModel.getChatGroups(userId);
 
       let allConversasions = userConversasions.concat(groupConversations).sort((a, b) => {
-        return -a.createdAt + b.createdAt;
+        return -a.updatedAt + b.updatedAt;
       });
       resolve({
         userConversasions: userConversasions,
