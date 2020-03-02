@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
-const LIMIT_NUMBER_TAKEN = 1;
+const LIMIT_NUMBER_TAKEN = 5;
+const LIMIT_CONVERSASION_TAKEN = 5;
 let Schema = mongoose.Schema;
 
 let ContactSchema = new Schema({
