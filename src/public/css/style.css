@@ -683,7 +683,7 @@ label:focus,
 }
 
 .left a.create-group-chat {
-  display: none;
+  display: block;
   float: left;
   width: 40px;
   height: 40px;
@@ -1332,8 +1332,15 @@ label:focus,
   float: right;
 }
 
-.read-more-notif, .read-more-contact, .read-more-contact-sent, .read-more-contact-received {
-  display: flex;
+.read-more-notif, 
+.read-more-contact, 
+.read-more-contact-sent, 
+.read-more-contact-received, 
+.read-more-group-conversasion,
+.read-more-user-conversasion,
+.read-more-all-conversasion {
+  /* display: flex; */
+  text-align: center;
   width: 90%;
   height: auto;
   padding: 7px 0px 0px 0px;
@@ -1358,4 +1365,8 @@ label:focus,
 
 .swal2-styled {
   font-size: 14px !important;
+}
+
+.tab-content > .active {
+  background-color: #ffffff;
 }

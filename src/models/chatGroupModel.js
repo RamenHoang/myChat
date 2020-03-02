@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+const LIMIT_CONVERSASION_TAKEN = 5;
 let Schema = mongoose.Schema;
 
 let ChatGroupSchema = new Schema({
@@ -12,5 +13,16 @@ let ChatGroupSchema = new Schema({
 	updatedAt: 			{type: Number, default: null},
 	deletedAt: 			{type: Number, default: null}
 });
+
+ChatGroupSchema.statics = {
+	getChatGroups(userId) {
+		return this.find({
+			'members': {$elemMatch: {'userId': userId}}
+		}).sort({'createdAt': -1}).limit(LIMIT_CONVERSASION_TAKEN).exec();
+	},
+	createNew(item) {
+		return this.create(item);
+	}
+}
 
 module.exports = mongoose.model('chatGroup', ChatGroupSchema);
