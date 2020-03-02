@@ -43,8 +43,8 @@ let updateAvatar = (req, res) => {
 			// Update user
 			let userUpdate = await user.updateUser(req.user._id, updateUserItem);
 
-			// Remove old user avatar
-			await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
+			// Don't remove old avatar because of using in message
+			// await fsExtra.remove(`${app.avatar_directory}/${userUpdate.avatar}`);
 
 			let result = {
 				message: transSuccess.info_updated,
