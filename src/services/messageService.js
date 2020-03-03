@@ -32,9 +32,14 @@ let getAllConversations = (userId) => {
 
       // => Push messages to each conversations
       let allConversationsPromise = allConversations.map(async (conversation) => {
-        let getMessages = await MessageModel.model.getMessages(userId, conversation._id);
         conversation = conversation.toObject();
-        conversation.messages = getMessages;
+        if (conversation.members) {
+          let getMessages = await MessageModel.model.getMessagesInGroup(conversation._id);
+          conversation.messages = getMessages;
+        } else {
+          let getMessages = await MessageModel.model.getMessagesInPersonal(userId, conversation._id);
+          conversation.messages = getMessages;
+        }
         return conversation;
       });
 
