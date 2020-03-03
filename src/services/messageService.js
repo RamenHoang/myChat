@@ -46,9 +46,6 @@ let getAllConversations = (userId) => {
       });
 
       resolve({
-        userConversations: userConversations,
-        groupConversations: groupConversations,
-        allConversations: allConversations,
         allconversationWithMessages: allconversationWithMessages
       });
     } catch (error) {
