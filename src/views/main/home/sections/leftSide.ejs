@@ -12,7 +12,7 @@
         <div class="tab-content">
             <div class="tab-pane active" id="all-chat">
                 <ul class="people no-padding-start">
-                    <% allConversations.forEach(function(conversation) { %>
+                    <% allconversationWithMessages.forEach(function(conversation) { %>
                         <% if (conversation.name) { %>
                             <a href="#uid_<%= conversation._id %>" class="room-chat" data-target="#to_<%= conversation._id %>">
                                 <li class="person group-chat" data-chat="<%= conversation._id %>">
@@ -29,8 +29,10 @@
                                             <% } %>
                                         </span> 
                                     </div>
-                                    <span class="time">Hai giờ trước</span>
-                                    <span class="preview">Chào cả nhóm</span>
+                                    <span class="time"> <%= getDuration(conversation.messages) %></span>
+                                    <span class="preview">
+                                        <%- getLastMessage(conversation.messages, user._id) %>
+                                    </span>
                                 </li>
                             </a>
                         <% } else { %>
@@ -47,8 +49,10 @@
                                             <%= conversation.username %>
                                         <% } %>
                                     </div>
-                                    <span class="time">Một phút trước</span>
-                                    <span class="preview">Xin chào</span>
+                                    <span class="time"> <%= getDuration(conversation.messages) %></span>
+                                    <span class="preview">
+                                        <%- getLastMessage(conversation.messages, user._id) %>
+                                    </span>
                                 </li>
                             </a>
                         <% } %>
@@ -61,24 +65,28 @@
             </div>
             <div class="tab-pane" id="user-chat">
                 <ul class="people no-padding-start">
-                    <% userConversations.forEach(function(conversation) { %>
-                        <a href="#uid_<%= conversation._id %>" class="room-chat" data-target="#to_<%= conversation._id %>">
-                            <li class="person" data-chat="<%= conversation._id %>">
-                                <div class="left-avatar">
-                                    <div class="dot"></div>
-                                    <img src="images/users/<%= conversation.avatar %>" alt="">
-                                </div>
-                                <div class="name">
-                                    <% if (conversation.usernamelength > 15) { %>
-                                        <%= conversation.username.slice(0, 12) + '...' %>
-                                    <% } else { %>  
-                                        <%= conversation.username %>
-                                    <% } %>
-                                </div>
-                                <span class="time">Một phút trước</span>
-                                <span class="preview">Xin chào</span>
-                            </li>
-                        </a>
+                    <% allconversationWithMessages.forEach(function(conversation) { %>
+                        <% if (!conversation.members) { %>
+                            <a href="#uid_<%= conversation._id %>" class="room-chat" data-target="#to_<%= conversation._id %>">
+                                <li class="person" data-chat="<%= conversation._id %>">
+                                    <div class="left-avatar">
+                                        <div class="dot"></div>
+                                        <img src="images/users/<%= conversation.avatar %>" alt="">
+                                    </div>
+                                    <div class="name">
+                                        <% if (conversation.usernamelength > 15) { %>
+                                            <%= conversation.username.slice(0, 12) + '...' %>
+                                        <% } else { %>  
+                                            <%= conversation.username %>
+                                        <% } %>
+                                    </div>
+                                    <span class="time"> <%= getDuration(conversation.messages) %></span>
+                                    <span class="preview">
+                                        <%- getLastMessage(conversation.messages, user._id) %>
+                                    </span>
+                                </li>
+                            </a>
+                        <% } %>
                     <% }) %>
                 </ul>
                 <!-- <hr style="width: 90%; margin: auto;"> -->
@@ -88,28 +96,32 @@
             </div>
             <div class="tab-pane" id="group-chat">
                 <ul class="people no-padding-start">
-                    <% groupConversations.forEach(function(conversation) { %> 
-                        <a href="#uidgroupChatItem._id" class="room-chat" data-target="#to_<%= conversation._id %>">
-                            <a href="#uid_<%= conversation._id %>" class="room-chat">
-                                <li class="person group-chat" data-chat="<%= conversation._id %>">
-                                    <div class="left-avatar">
-                                        <!-- <div class="dot"></div> -->
-                                        <img src="images/users/group-avatar-trungquandev.png" alt="">
-                                    </div>
-                                    <div class="name">
-                                        <span class="group-chat-name">
-                                            <% if (conversation.name.length > 15) { %>
-                                                <%= conversation.name.slice(0, 12) + '...' %>
-                                            <% } else { %>  
-                                                <%= conversation.name %>
-                                            <% } %>
+                    <% allconversationWithMessages.forEach(function(conversation) { %> 
+                        <% if (conversation.members) { %>
+                            <a href="#uidgroupChatItem._id" class="room-chat" data-target="#to_<%= conversation._id %>">
+                                <a href="#uid_<%= conversation._id %>" class="room-chat">
+                                    <li class="person group-chat" data-chat="<%= conversation._id %>">
+                                        <div class="left-avatar">
+                                            <!-- <div class="dot"></div> -->
+                                            <img src="images/users/group-avatar-trungquandev.png" alt="">
+                                        </div>
+                                        <div class="name">
+                                            <span class="group-chat-name">
+                                                <% if (conversation.name.length > 15) { %>
+                                                    <%= conversation.name.slice(0, 12) + '...' %>
+                                                <% } else { %>  
+                                                    <%= conversation.name %>
+                                                <% } %>
+                                            </span>
+                                        </div>
+                                        <span class="time"> <%= getDuration(conversation.messages) %></span>
+                                        <span class="preview">
+                                            <%- getLastMessage(conversation.messages, user._id) %>
                                         </span>
-                                    </div>
-                                    <span class="time">Hai giờ trước</span>
-                                    <span class="preview">Chào cả nhóm</span>
-                                </li>
+                                    </li>
+                                </a>
                             </a>
-                        </a>
+                        <% } %>
                     <% }) %>
                 </ul>
                 <!-- <hr style="width: 90%; margin: auto;"> -->
