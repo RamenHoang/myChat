@@ -4,6 +4,8 @@ function textAndEmojiChat(chatId) {
 
     let currentEmojioneArea = $(this);
     if (element.which === 13) {
+
+      // 
       let targetId = $(`#write-chat-${chatId}`).data('chat');
       let messageVal = $(`#write-chat-${chatId}`).val();
 
@@ -72,6 +74,14 @@ function textAndEmojiChat(chatId) {
 
         // 6. Emit cho server
         socket.emit('chat-text-emoji', dataToEmit);
+
+        // 7. remove typing
+        typingOff(chatId);
+
+        // 8. Nếu có ng dùng trong group đang typing, xoá ngay
+        if ($(`.right .chat[data-chat=${chatId}]`).find('div.bubble-typing-gif').length) {
+          $(`.right .chat[data-chat=${chatId}]`).find('div.bubble-typing-gif').remove();
+        }
       }).fail(function (response) {
         // Error
         alertify.notify(response.responseText, 'error', 5);
@@ -94,6 +104,9 @@ socket.on('response-chat-text-emoji', function (response) {
         </div>
         `
       );
+      // 4. Đổi dữ liệu tại preview và time
+      $(`.person[data-chat=${chatId}]`).find('.preview').addClass('message-time-realtime').html(`<strong>${response.message.sender.name}</strong>: ${response.message.text}`);
+      $(`.person[data-chat=${chatId}]`).find('.time').text(Math.floor((Date.now() - response.message.createdAt) / 1000) + ' giây');
     }
   } else {
     chatId = response.currentUserId;
@@ -104,14 +117,13 @@ socket.on('response-chat-text-emoji', function (response) {
       </div>
       `
     );
+    // 4. Đổi dữ liệu tại preview và time
+    $(`.person[data-chat=${chatId}]`).find('.preview').addClass('message-time-realtime').html(`<strong>${response.message.sender.name}</strong>: ${response.message.text}`);
+    $(`.person[data-chat=${chatId}]`).find('.time').text(Math.floor((Date.now() - response.message.createdAt) / 1000) + ' giây');
   }
 
   // 2.Kéo thanh cuộn xuống cuối cùng
   nineScrollRight(chatId);
-
-  // 4. Đổi dữ liệu tại preview và time
-  $(`.person[data-chat=${chatId}]`).find('.preview').addClass('message-time-realtime').html(`<strong>${response.message.sender.name}</strong>: ${response.message.text}`);
-  $(`.person[data-chat=${chatId}]`).find('.time').text(Math.floor((Date.now() - response.message.createdAt) / 1000) + ' giây');
 
   // 5. Đẩy cuộc hội thoại lên đầu
   $(`.person[data-chat=${chatId}]`).on('toTop.moveConversationToTheTop', function () {
