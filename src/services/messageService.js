@@ -39,10 +39,10 @@ let getAllConversations = (userId) => {
         conversation = conversation.toObject();
         if (conversation.members) {
           let getMessages = await MessageModel.model.getMessagesInGroup(conversation._id);
-          conversation.messages = getMessages;
+          conversation.messages = getMessages.reverse();
         } else {
           let getMessages = await MessageModel.model.getMessagesInPersonal(userId, conversation._id);
-          conversation.messages = getMessages;
+          conversation.messages = getMessages.reverse();
         }
         return conversation;
       });

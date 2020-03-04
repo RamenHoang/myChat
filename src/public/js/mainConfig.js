@@ -162,17 +162,17 @@ function changeTypeChat() {
 }
 
 function changeScreenChat() {
-  $('.room-chat').find('li').addClass('active');
   $('.room-chat').unbind('click').on('click', function () {
+    let chatId = $(this).find('li').data('chat');
     $('.person').removeClass('active');
-    $(this).find('li').addClass('active');
+    $(`.person[data-chat=${chatId}]`).addClass('active');
     $(this).tab('show');
 
     // Cấu hình thanh cuộn bên box chat mỗi khi click chuột vào 1 cuộc trò truyện cụ thể
-    nineScrollRight($(this).find('li').data('chat'));
+    nineScrollRight(chatId);
 
     // Bật emoji, tham số truyền vào là id của box nhập nội dung tin nhắn
-    enableEmojioneArea($(this).find('li').data('chat'));
+    enableEmojioneArea(chatId);
   });
 }
 

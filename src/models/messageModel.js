@@ -56,10 +56,10 @@ MessageSchema.statics = {
 					]
 				}
 			]
-		}).sort({'createdAt': 1}).limit(LIMIT_MESSAGE_TAKEN).exec();
+		}).sort({'createdAt': -1}).limit(LIMIT_MESSAGE_TAKEN).exec();
 	},
 	getMessagesInGroup(groupId) {
-		return this.find({'receiverId': groupId}).sort({'createdAt': 1}).limit(LIMIT_MESSAGE_TAKEN).exec();
+		return this.find({'receiverId': groupId}).sort({'createdAt': -1}).limit(LIMIT_MESSAGE_TAKEN).exec();
 	}
 }
 
