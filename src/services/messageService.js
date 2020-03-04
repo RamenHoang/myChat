@@ -2,6 +2,8 @@ import ContactModel from '../models/contactModel';
 import UserModel from '../models/userModel';
 import ChatGroupModel from '../models/chatGroupModel';
 import MessageModel from '../models/messageModel';
+import { transErrors } from '../../lan/vi';
+import { app } from '../config/app';
 
 let getAllConversations = (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -13,9 +15,11 @@ let getAllConversations = (userId) => {
       conversations = conversations.map(async (conversation) => {
         let conversationItem;
         if (conversation.contactId == userId) {
-          conversationItem =  await UserModel.getNormalUserDataById(conversation.userId);
+          conversationItem = await UserModel.getNormalUserDataById(conversation.userId);
         }
-        conversationItem = await UserModel.getNormalUserDataById(conversation.contactId);
+        else {
+          conversationItem = await UserModel.getNormalUserDataById(conversation.contactId);
+        }
         conversationItem.updatedAt = conversation.updatedAt;
         return conversationItem;
       });
@@ -60,6 +64,71 @@ let getAllConversations = (userId) => {
   });
 }
 
+let addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let receiver, newMessageItem;
+      if (isChatGroup) {
+        let getChatGroupReceiver = await ChatGroupModel.getChatGroupById(receiverId);
+        if (!getChatGroupReceiver) {
+          return reject(transErrors.conversation_not_found);
+        }
+        receiver = {
+          id: receiverId,
+          name: getChatGroupReceiver.name,
+          avatar: app.group_avatar
+        }
+
+        newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiverId,
+          conversasionType: MessageModel.conversasionTypes.GROUP,
+          messageType: MessageModel.messageTypes.TEXT,
+          sender: sender,
+          receiver: receiver,
+          text: messageVal,
+          createdAt: Date.now()
+        }
+
+        // update group chat: field updatedAt
+        await ChatGroupModel.updateWhenHasNewMessage(receiverId, getChatGroupReceiver.messageAmount + 1);
+      } else {
+        // Personal conversation
+        let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
+        if (!getUserReceiver) {
+          return reject(transErrors.conversation_not_found);
+        }
+        receiver = {
+          id: receiverId,
+          name: getUserReceiver.username,
+          avatar: getUserReceiver.avatar
+        }
+
+        newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiverId,
+          conversasionType: MessageModel.conversasionTypes.PERSONAL,
+          messageType: MessageModel.messageTypes.TEXT,
+          sender: sender,
+          receiver: receiver,
+          text: messageVal,
+          createdAt: Date.now()
+        }
+        
+        // update contact: field updatedAt
+        await ContactModel.updateWhenHasNewMessage(sender.id, receiverId);
+      }
+      // create new message
+      let newMessage = await MessageModel.model.createNew(newMessageItem);
+      return resolve(newMessage);
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
-  getAllConversations: getAllConversations
+  getAllConversations: getAllConversations,
+  addNewTextEmoji: addNewTextEmoji
 }

@@ -8,7 +8,8 @@ export const transValidation = {
 	update_address: 'Địa chỉ giới hạn trong vòng 3 - 30 kí tự',
 	update_phone: 'Số điện thoại chỉ có độ dài là 10 số',
 	new_password_invalid: 'Mật khẩu mới không được trùng với mật khẩu cũ',
-	keyword_find_user: 'Lỗi kí tự tìm kiếm. Chỉ cho phép chữ cái và số'
+	keyword_find_user: 'Lỗi kí tự tìm kiếm. Chỉ cho phép chữ cái và số',
+	message_text_emoji_incorrect: 'Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự. Tối đa 400 kí tự.'
 };
 
 export const transErrors = {
@@ -21,7 +22,8 @@ export const transErrors = {
 	avatar_type: 'Kiểu file không hợp lệ. Chỉ chấp nhận jpg hoặc png',
 	avatar_size: 'Ảnh có dung lượng tối đa là 1MB',
 	account_undefined: 'Tài khoản không tồn tại',
-	current_password_not_match: 'Mật khẩu hiện tại không chính xác'
+	current_password_not_match: 'Mật khẩu hiện tại không chính xác',
+	conversation_not_found: 'Cuộc trò chuyện không tồn tại!'
 }
 
 export const transSuccess = {

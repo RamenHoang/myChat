@@ -22,6 +22,12 @@ ChatGroupSchema.statics = {
 	},
 	createNew(item) {
 		return this.create(item);
+	},
+	getChatGroupById(chatGroupId) {
+		return this.findById(chatGroupId).exec();
+	},
+	updateWhenHasNewMessage(chatGroupId, newMessageAmount) {
+		return this.findByIdAndUpdate(chatGroupId, {'messageAmount': newMessageAmount, 'updatedAt': Date.now()}).exec();
 	}
 }
 

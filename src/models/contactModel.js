@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const LIMIT_NUMBER_TAKEN = 5;
-const LIMIT_CONVERSASION_TAKEN = 5;
+const LIMIT_CONVERSASION_TAKEN = 30;
 
 let Schema = mongoose.Schema;
 
@@ -210,6 +210,22 @@ ContactSchema.statics = {
 					{ 'status': true }
 				]
 			}
+		).exec();
+	},
+	updateWhenHasNewMessage(senderId, contactId) {
+		return this.findOneAndUpdate(
+			{
+				$and: [
+					{
+						$or: [
+							{'userId': senderId, 'contactId': contactId},
+							{'userId': contactId, 'contactId': senderId}
+						]
+					},
+					{'status': true}
+				]
+			},
+			{'updatedAt': Date.now()}
 		).exec();
 	}
 };
