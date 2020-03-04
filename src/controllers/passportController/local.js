@@ -1,6 +1,7 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import UserModel from '../../models/userModel';
+import ChatGroupModel from '../../models/chatGroupModel';
 import { transErrors, transSuccess } from '../../../lan/vi'; 
 
 let localStrategy = passportLocal.Strategy;
@@ -37,8 +38,9 @@ let initPassportLocal = () => {
 
 	passport.deserializeUser((id, done) => {
 		UserModel.findUserById(id)
-			.then(user => {
+			.then(async user => {
 				user.local.password = '';
+				user.chatGroups = await ChatGroupModel.getChatGroups(user._id);
 				return done(null, user);
 			})
 			.catch(error => {

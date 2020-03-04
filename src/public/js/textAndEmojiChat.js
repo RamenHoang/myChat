@@ -1,5 +1,7 @@
 function textAndEmojiChat(chatId) {
-  $('.emojionearea').unbind('keyup').on('keyup', function(element) {
+  $('.emojionearea').unbind('keyup').on('keyup', function (element) {
+    $(`.person[data-chat=${chatId}]`).find('.preview').removeClass('message-time-realtime');
+
     let currentEmojioneArea = $(this);
     if (element.which === 13) {
       let targetId = $(`#write-chat-${chatId}`).data('chat');
@@ -17,49 +19,106 @@ function textAndEmojiChat(chatId) {
       if ($(`#write-chat-${chatId}`).hasClass('chat-in-group')) {
         dataTextEmojiForSent.isChatGroup = true;
       }
-      
+
       // Call ajax to server
-      $.post('/message/add-new-text-emoji', dataTextEmojiForSent, function(data) {
-        // 1. Xử lý dữ liệu trước khi hiển thị
-        let messageOfMe = $(`<div class="bubble me" data-mess-id="${data.message._id}">`);
-        if (dataTextEmojiForSent.isChatGroup) {
-          messageOfMe.html(`
-            <img src="/images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}">
-          `);
-          messageOfMe.text(data.message.text);
-        } else {
-          messageOfMe.text(data.message.text);
+      $.post('/message/add-new-text-emoji', dataTextEmojiForSent, function (data) {
+        let dataToEmit = {
+          message: data.message
         }
 
-        // 2. Đẩy dữ liệu ra client
+
+        // 1. Đẩy dữ liệu ra client
         increaseNumberMessageGroup(chatId);
 
-        $( `.right .chat[data-chat=${chatId}]`).append(messageOfMe);
+        if (dataTextEmojiForSent.isChatGroup) {
+          $(`.right .chat[data-chat=${chatId}]`).append(
+            `
+            <div class="bubble me" data-mess-id="${data.message._id}">
+              <img src="/images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}"/>
+              ${data.message.text}
+            </div>
+            `
+          );
+          dataToEmit.groupId = targetId;
+        } else {
+          $(`.right .chat[data-chat=${chatId}]`).append(
+            `
+            <div class="bubble me" data-mess-id="${data.message._id}">
+              ${data.message.text}
+            </div>
+            `
+          );
+          dataToEmit.contactId = targetId;
+        }
 
-        // 3.Kéo thanh cuộn xuống cuối cùng
+        // 2.Kéo thanh cuộn xuống cuối cùng
         nineScrollRight(chatId);
 
-        // 4. Xoá dữ liệu ở thanh input
+        // 3. Xoá dữ liệu ở thanh input
         $(`#write-chat-${chatId}`).val('');
         currentEmojioneArea.find('.emojionearea-editor').text('');
 
-        // 5. Đổi dữ liệu tại preview và time
-        $(`.person[data-chat=${chatId}]`).find('.preview').text(data.message.text);
+        // 4. Đổi dữ liệu tại preview và time
+        $(`.person[data-chat=${chatId}]`).find('.preview').html(`<strong>Bạn</strong>: ${data.message.text}`);
         $(`.person[data-chat=${chatId}]`).find('.time').text(Math.floor((Date.now() - data.message.createdAt) / 1000) + ' giây');
 
-        // 6. Đẩy cuộc hội thoại lên đầu
-        $(`.person[data-chat=${chatId}]`).on('click.moveConversationToTheTop', function() {
+        // 5. Đẩy cuộc hội thoại lên đầu
+        $(`.person[data-chat=${chatId}]`).on('toTop.moveConversationToTheTop', function () {
           let dataToMove = $(this).parent();
           $(this).closest('ul').prepend(dataToMove);
           $(this).off('click.moveConversationToTheTop');
         });
-        $(`.person[data-chat=${chatId}]`).click();
+        $(`.person[data-chat=${chatId}]`).trigger('toTop.moveConversationToTheTop');
 
-        // 7. Emit cho server
-      }).fail(function(response) {
+        // 6. Emit cho server
+        socket.emit('chat-text-emoji', dataToEmit);
+      }).fail(function (response) {
         // Error
         alertify.notify(response.responseText, 'error', 5);
       });
     }
   });
 }
+
+socket.on('response-chat-text-emoji', function (response) {
+  let chatId;
+  if (response.currentGroupId) {
+    chatId = response.currentGroupId;
+    if (response.currentUserId !== $('#dropdown-navbar-user').data('uid')) {
+      increaseNumberMessageGroup(chatId);
+      $(`.right .chat[data-chat=${chatId}]`).append(
+        `
+        <div class="bubble you" data-mess-id="${response.message._id}">
+          <img src="/images/users/${response.message.sender.avatar}" class="avatar-small" title="${response.message.sender.name}"/>
+          ${response.message.text}
+        </div>
+        `
+      );
+    }
+  } else {
+    chatId = response.currentUserId;
+    $(`.right .chat[data-chat=${chatId}]`).append(
+      `
+      <div class="bubble you" data-mess-id="${response.message._id}">
+        ${response.message.text}
+      </div>
+      `
+    );
+  }
+
+  // 2.Kéo thanh cuộn xuống cuối cùng
+  nineScrollRight(chatId);
+
+  // 4. Đổi dữ liệu tại preview và time
+  $(`.person[data-chat=${chatId}]`).find('.preview').addClass('message-time-realtime').html(`<strong>${response.message.sender.name}</strong>: ${response.message.text}`);
+  $(`.person[data-chat=${chatId}]`).find('.time').text(Math.floor((Date.now() - response.message.createdAt) / 1000) + ' giây');
+
+  // 5. Đẩy cuộc hội thoại lên đầu
+  $(`.person[data-chat=${chatId}]`).on('toTop.moveConversationToTheTop', function () {
+    let dataToMove = $(this).parent();
+    $(this).closest('ul').prepend(dataToMove);
+    $(this).off('click.moveConversationToTheTop');
+  });
+  $(`.person[data-chat=${chatId}]`).trigger('toTop.moveConversationToTheTop');
+});
+
