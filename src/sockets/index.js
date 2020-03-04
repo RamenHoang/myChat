@@ -4,6 +4,8 @@ import removeRequestContactReceived from './contact/removeRequestContactReceived
 import acceptRequestContact from './contact/acceptRequestContact';
 import removeContact from './contact/removeContact';
 import chatTextEmoji from './chat/chatTextEmoji';
+import typingOn from './chat/typingOn';
+import typingOff from './chat/typingOff'
 /**
  * 
  * @param {*} io  from socket.io lib
@@ -15,6 +17,8 @@ let initSockets = (io) => {
     acceptRequestContact(io);
     removeContact(io);
     chatTextEmoji(io);
+    typingOn(io);
+    typingOff(io);
 }
 
 module.exports = initSockets;
