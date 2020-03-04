@@ -37,6 +37,9 @@ const MESSAGE_TYPES = {
 }
 
 MessageSchema.statics = {
+	createNew(item) {
+		return this.create(item);
+	},
 	getMessagesInPersonal(senderId, receiverId) {
 		return this.find({
 			$or: [

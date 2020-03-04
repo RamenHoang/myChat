@@ -44,6 +44,7 @@ function enableEmojioneArea(chatId) {
     shortnames: false,
     events: {
       keyup: function (editor, event) {
+        // Gán giá trị vào thẻ input chính đã bị ẩn
         $(`#write-chat-${chatId}`).val(this.getText());
       },
       click: function() {
@@ -207,5 +208,5 @@ $(document).ready(function () {
   // Thay đổi màn hình chat
   changeScreenChat();
 
-  $('ul.people').find('li')[0].click();
+  $('ul.people').find('a')[0].click();
 });

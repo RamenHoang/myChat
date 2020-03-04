@@ -6,7 +6,8 @@ export const getLastMessage = (messages, userId) => {
   if (!messages.length) return '';
   let lastMes = messages[messages.length - 1];
   if (lastMes.messageType === 'text') {
-    return lastMes.text;
+    if (lastMes.senderId == userId) return `<strong>Bạn</strong>: ${lastMes.text}`;
+    return `<strong>${lastMes.sender.name}</strong>: ${lastMes.text}`;
   }
   if (lastMes.messageType === 'image') {
     if (lastMes.senderId == userId) return 'Bạn đã gửi một ảnh';
