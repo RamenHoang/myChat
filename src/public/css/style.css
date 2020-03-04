@@ -458,7 +458,7 @@ label:focus,
 .avatar-small {
   width: 24px;
   height: 24px;
-  border-radius: 16px 16px 0 16px;
+  border-radius: 16px 16px 16px 16px;
 }
 
 .active {
@@ -1381,4 +1381,8 @@ label:focus,
 #screen-chat {
   width: 100%;
   height: 100%;
+}
+
+.show-number-members, .show-number-messages {
+  color: #2c3e59 !important;
 }
