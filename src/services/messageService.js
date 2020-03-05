@@ -4,6 +4,7 @@ import ChatGroupModel from '../models/chatGroupModel';
 import MessageModel from '../models/messageModel';
 import { transErrors } from '../../lan/vi';
 import { app } from '../config/app';
+import fsExtra from 'fs-extra';
 
 let getAllConversations = (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -82,7 +83,7 @@ let addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
         newMessageItem = {
           senderId: sender.id,
           receiverId: receiverId,
-          conversasionType: MessageModel.conversasionTypes.GROUP,
+          conversasionType: MessageModel.conversationTypes.GROUP,
           messageType: MessageModel.messageTypes.TEXT,
           sender: sender,
           receiver: receiver,
@@ -107,14 +108,82 @@ let addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
         newMessageItem = {
           senderId: sender.id,
           receiverId: receiverId,
-          conversasionType: MessageModel.conversasionTypes.PERSONAL,
+          conversasionType: MessageModel.conversationTypes.PERSONAL,
           messageType: MessageModel.messageTypes.TEXT,
           sender: sender,
           receiver: receiver,
           text: messageVal,
           createdAt: Date.now()
         }
-        
+
+        // update contact: field updatedAt
+        await ContactModel.updateWhenHasNewMessage(sender.id, receiverId);
+      }
+      // create new message
+      let newMessage = await MessageModel.model.createNew(newMessageItem);
+      return resolve(newMessage);
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
+}
+
+let addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
+  return new Promise(async (resolve, reject) => {
+    let imageBuffer = await fsExtra.readFile(messageVal.path);
+    let imageContentType = messageVal.mimetype;
+    let imageName = messageVal.originalname;
+    
+    try {
+      let receiver, newMessageItem;
+      if (isChatGroup) {
+        let getChatGroupReceiver = await ChatGroupModel.getChatGroupById(receiverId);
+        if (!getChatGroupReceiver) {
+          return reject(transErrors.conversation_not_found);
+        }
+        receiver = {
+          id: receiverId,
+          name: getChatGroupReceiver.name,
+          avatar: app.group_avatar
+        }
+
+        newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiverId,
+          conversasionType: MessageModel.conversationTypes.GROUP,
+          messageType: MessageModel.messageTypes.IMAGE,
+          sender: sender,
+          receiver: receiver,
+          file: { data: imageBuffer, contentType: imageContentType, fileName: imageName },
+          createdAt: Date.now()
+        }
+
+        // update group chat: field updatedAt
+        await ChatGroupModel.updateWhenHasNewMessage(receiverId, getChatGroupReceiver.messageAmount + 1);
+      } else {
+        // Personal conversation
+        let getUserReceiver = await UserModel.getNormalUserDataById(receiverId);
+        if (!getUserReceiver) {
+          return reject(transErrors.conversation_not_found);
+        }
+        receiver = {
+          id: receiverId,
+          name: getUserReceiver.username,
+          avatar: getUserReceiver.avatar
+        }
+
+        newMessageItem = {
+          senderId: sender.id,
+          receiverId: receiverId,
+          conversasionType: MessageModel.conversationTypes.PERSONAL,
+          messageType: MessageModel.messageTypes.IMAGE,
+          sender: sender,
+          receiver: receiver,
+          file: { data: imageBuffer, contentType: imageContentType, fileName: imageName },
+          createdAt: Date.now()
+        }
+
         // update contact: field updatedAt
         await ContactModel.updateWhenHasNewMessage(sender.id, receiverId);
       }
@@ -130,5 +199,6 @@ let addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
 
 module.exports = {
   getAllConversations: getAllConversations,
-  addNewTextEmoji: addNewTextEmoji
+  addNewTextEmoji: addNewTextEmoji,
+  addNewImage: addNewImage
 }

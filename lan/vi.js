@@ -23,7 +23,9 @@ export const transErrors = {
 	avatar_size: 'Ảnh có dung lượng tối đa là 1MB',
 	account_undefined: 'Tài khoản không tồn tại',
 	current_password_not_match: 'Mật khẩu hiện tại không chính xác',
-	conversation_not_found: 'Cuộc trò chuyện không tồn tại!'
+	conversation_not_found: 'Cuộc trò chuyện không tồn tại!',
+	image_message_type: 'Kiểu file không hợp lệ. Chỉ chấp nhận jpg hoặc png',
+	image_message_size: 'Ảnh có dung lượng tối đa là 1MB'
 }
 
 export const transSuccess = {

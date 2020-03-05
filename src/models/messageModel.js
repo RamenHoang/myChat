@@ -6,7 +6,7 @@ const LIMIT_MESSAGE_TAKEN = 30;
 let MessageSchema = new Schema({
 	senderId: 	String,
 	receiverId: String,
-	conversasionType: String,
+	conversationType: String,
 	messageType: String,
 	sender: 		{
 								id: String,
@@ -60,11 +60,31 @@ MessageSchema.statics = {
 	},
 	getMessagesInGroup(groupId) {
 		return this.find({'receiverId': groupId}).sort({'createdAt': -1}).limit(LIMIT_MESSAGE_TAKEN).exec();
+	},
+	updateSenderAvatarMessage(id, avatar) {
+		return this.updateMany(
+			{
+				'senderId': id
+			},
+			{
+				'sender.avatar': avatar
+			}
+		).exec();
+	},
+	updateReceiverAvatarMessage(id, avatar) {
+		return this.updateMany(
+			{
+				'receiverId': id
+			},
+			{
+				'receiver.avatar': avatar
+			}
+		).exec();
 	}
 }
 
 module.exports = {
 	model: mongoose.model('message', MessageSchema),
-	conversasionTypes: MESSAGE_CONVERSASION_TYPES,
+	conversationTypes: MESSAGE_CONVERSASION_TYPES,
 	messageTypes: MESSAGE_TYPES 
 }
