@@ -1,4 +1,5 @@
 import UserModel from '../models/userModel';
+import MessageModel from '../models/messageModel';
 import { transErrors } from '../../lan/vi';
 import md5 from 'md5';
 
@@ -8,7 +9,11 @@ import md5 from 'md5';
  * @param  {[Object]} d [info is to be updating]
  * @return {[type]}      [description]
  */
-let updateUser = (id, d) => {
+let updateUser = async (id, d) => {
+	// Update avatar in message collection
+	await MessageModel.model.updateSenderAvatarMessage(id, d.avatar);
+	await MessageModel.model.updateReceiverAvatarMessage(id, d.avatar);
+
 	return UserModel.updateUser(id, d);
 }
 

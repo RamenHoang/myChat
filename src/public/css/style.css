@@ -843,9 +843,10 @@ label:focus,
   flex-direction: column;
 }
 
-#image-chat,
-#attach-chat {
-  display: none;
+.image-chat,
+.attach-chat {
+  display: none !important;
+  cursor: pointer;
 }
 
 .room-chat:hover,
