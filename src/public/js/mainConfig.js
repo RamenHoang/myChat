@@ -100,25 +100,33 @@ function configNotification() {
 
 function gridPhotos(layoutNumber) {
   $('.show-images').unbind('click').on('click', function () {
-    let convesationId = $(this).attr('href');
-    let countRows = Math.ceil($(`${convesationId}`).find('div.all-images img').length / layoutNumber);
+    let modalId = $(this).attr('href');
+
+    let originDataImage = $(`${modalId}`).find('div.modal-body').html();
+
+    let countRows = Math.ceil($(`${modalId}`).find('div.all-images img').length / layoutNumber);
     let layoutStr = new Array(countRows).fill(layoutNumber).join("");
-    $(`${convesationId}`).find('div.all-images').photosetGrid({
+    $(`${modalId}`).find('div.all-images').photosetGrid({
       highresLinks: true,
       rel: 'withhearts-gallery',
       gutter: '2px',
       layout: layoutStr,
       onComplete: function () {
-        $(`${convesationId}`).find('.all-images').css({
+        $(`${modalId}`).find('.all-images').css({
           'visibility': 'visible'
         });
-        $(`${convesationId}`).find('.all-images a').colorbox({
+        $(`${modalId}`).find('.all-images a').colorbox({
           photo: true,
           scalePhotos: true,
           maxHeight: '90%',
           maxWidth: '90%'
         });
       }
+    });
+
+    // Bắt sự kiện đóng modal
+    $(`${modalId}`).on('hidden.bs.modal', function() {
+      $(this).find('div.modal-body').html(originDataImage);
     });
   });
 }
