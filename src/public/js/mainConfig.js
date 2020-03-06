@@ -188,6 +188,9 @@ function changeScreenChat() {
 
     // Bật chat tin nhắn hình ảnh
     imageChat(chatId);
+
+    // Bật chat tệp
+    attachmentChat(chatId);
   });
 }
 
