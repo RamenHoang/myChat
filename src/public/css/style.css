@@ -458,7 +458,8 @@ label:focus,
 .avatar-small {
   width: 24px;
   height: 24px;
-  border-radius: 16px 16px 16px 16px;
+  /* border-radius: 16px 16px 16px 16px; */
+  border-radius: 50%;
 }
 
 .active {
@@ -831,9 +832,9 @@ label:focus,
   overflow: auto;
   position: relative;
   padding: 0 35px 10px;
-  border-width: 1px 1px 1px 0;
+  /* border-width: 1px 1px 1px 0;
   border-style: solid;
-  border-color: #e6e6e6;
+  border-color: #e6e6e6; */
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: flex-end;
@@ -862,8 +863,11 @@ label:focus,
   display: block;
 }
 
+.group .show-image-chat {
+  max-width: calc(100% - 34px);
+}
 .show-image-chat {
-  max-width: 50%;
+  max-width: 100%;
 }
 
 #loader {
@@ -1054,11 +1058,13 @@ label:focus,
 }
 
 .right .bubble {
-  max-width: 46%;
+  max-width: 30%;
+
   word-wrap: break-word;
   font-size: 16px;
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
+  /* display: inline; */
   clear: both;
   margin-top: 4px;
   margin-bottom: 4px;
@@ -1081,22 +1087,26 @@ label:focus,
 .right .bubble.you {
   float: left;
   color: #fff;
-  background-color: #2ECC71;
+  background-color: #2ECC71 !important;
   -ms-flex-item-align: start;
   align-self: flex-start;
   -webkit-animation-name: slideFromLeft;
   animation-name: slideFromLeft;
 }
 
+.right .bubble.you a {
+  color: #337ab7;
+}
+
 .right .bubble.you:before {
   left: -3px;
-  background-color: #2ECC71;
+  background-color: #2ECC71 !important;
 }
 
 .right .bubble.me {
   float: right;
   color: #1a1a1a;
-  background-color: #eceff1;
+  background-color: #eceff1 !important;
   -ms-flex-item-align: end;
   align-self: flex-end;
   -webkit-animation-name: slideFromRight;
@@ -1105,7 +1115,7 @@ label:focus,
 
 .right .bubble.me:before {
   right: -3px;
-  background-color: #eceff1;
+  background-color: #eceff1 !important;
 }
 
 .right .bubble.me img {
@@ -1125,13 +1135,11 @@ label:focus,
 
 .right .bubble.me a {
   float: left;
-  border-bottom: 1.5px solid #c8d6e5;
   padding: 5px;
 }
 
 .right .bubble.you a {
   float: right;
-  border-bottom: 1.5px solid #c8d6e5;
   padding: 5px;
 }
 
@@ -1360,7 +1368,7 @@ label:focus,
 }
 
 .swal2-title {
-  font-size: 30px !important;
+  font-size: 20px !important;
 }
 
 .swal2-icon {
@@ -1391,4 +1399,103 @@ label:focus,
 .message-time-realtime {
   color: #e74c3c !important;
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .person .name {
+    display: none !important;
+  }
+  .person .time {
+    display: none !important;
+  }
+  .person .preview
+  {
+    display: none !important;
+  }
+  .people .person {
+    padding-bottom: 50px !important;
+  }
+  .col-sm-3 {
+    float: left;
+    width: 50px;
+  }
+  .col-sm-9 {
+    float: right;
+    width: calc(100% - 50px);
+  }
+  .right .bubble {
+    max-width: 70%;
+  }
+  .right .chat {
+    margin-right: 0px !important;
+    padding: 5px 7px !important;
+  }
+  /* .content-chat {
+    padding: 10px 5px !important;
+  } */
+  .top {
+    padding: 5px 2px !important;
+  }
+  .navbar-brand {
+    display: none;
+  }
+  .collapse {
+    display: flex;
+  }
+  .container-fluid {
+    margin-right: 0;
+  }
+  .container-fluid > .navbar-collapse {
+    margin:  0 !important;
+  }
+  .searchBox {
+    width: 100px;
+  }
+  .navbar {
+    display: flex;
+  }
+  .nav {
+    display: flex;
+    float: right;
+  }
+  .nav > li > a {
+    padding: 10px 5px;
+  }
+  .navbar-nav {
+    margin: 0;
+  }
+
+  .left a.create-group-chat {
+    margin-left: 2px !important;
+    margin-top: 5px;
+  }
+  
+  #notifications {
+    right: -116px !important;
+  }
+
+  #notifications:before {
+    margin-right: 120px;
+  }
+
+  .navbar-nav .open .dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    background-color: #1a1a1a;
+  }
+  .navbar-nav .open a:focus {
+    background-color: transparent !important;
+  }
+
+  .modal-content .tab-content {
+    top: 64px;
+    position: relative;
+  }
+  .modal-content {
+    top: 40px;
+  }
+
+  .right .content-chat {
+    padding: 15px 10px;
+  }
 }
