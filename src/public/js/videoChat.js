@@ -13,6 +13,20 @@ function videoChat(chatId) {
   })
 }
 
+function playVideoStream(videoTabId, stream) {
+  let video = document.getElementById(videoTabId);
+  video.srcObject = stream;
+  video.onloadeddata = function () {
+    video.play();
+  }
+}
+
+function closeVideoStream(stream) {
+  return stream.getTracks().forEach(function(track) {
+    track.stop();
+  });
+}
+
 $(document).ready(function () {
   // 2. Caller
   socket.on('server-send-listener-offline', function () {
@@ -20,7 +34,14 @@ $(document).ready(function () {
   });
 
   let getPeerId = '';
-  const peer = new Peer();
+  const peer = new Peer({
+    key: 'peerjs',
+    host: 'peerjs-server-trungquandev.herokuapp.com',
+    secure: true,
+    port: 443
+    // debug: 3
+  });
+
   peer.on('open', function (peerId) {
     getPeerId = peerId;
   });
@@ -77,13 +98,6 @@ $(document).ready(function () {
             return false;
           });
         });
-
-        // 13. Caller
-        socket.on('server-send-accept-request-call-to-caller', function(response) {
-          Swal.close();
-
-          console.log(`ready call with ${response.listenerName}`);
-        });
       }
     })
       .then(result => {
@@ -120,13 +134,6 @@ $(document).ready(function () {
         socket.on('server-send-cancel-request-call-to-listener', function (response) {
           Swal.close();
         });
-
-        // 14. Listener
-        socket.on('server-send-accept-request-call-to-listener', function(response) {
-          Swal.close();
-
-          console.log(`ready call with ${response.callerName}`);
-        });
       }
     })
       .then(result => {
@@ -139,6 +146,90 @@ $(document).ready(function () {
           socket.emit('listener-accept-request-call-to-server', dataToEmit);
         }
       });
+  });
+
+
+  // 13. Caller
+  socket.on('server-send-accept-request-call-to-caller', function (response) {
+    Swal.close();
+
+    let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
+    getUserMedia({ video: true, audio: true }, function (stream) {
+      // Mo modal stream
+      $('#streamModal').modal('show');
+      // Chay stream cua minh
+      playVideoStream('local-stream', stream);
+
+      // Goi toi listener
+      let call = peer.call(response.listenerPeerId, stream);
+
+      // Doi listener play
+      call.on('stream', function (remoteStream) {
+        // Chay stream cua listener
+        playVideoStream('remote-stream', remoteStream);
+      });
+
+      // Dong modal => remove stream
+      $('#streamModal').on('hidden.bs.modal', function () {
+        closeVideoStream(stream);
+
+        Swal.fire({
+          title: `Đã kết thúc cuộc gọi với &nbsp <span style="color: #2ecc71;">${response.listenerName}</span>!`,
+          allowOutsideClick: false,
+          backdrop: 'rgba(85, 85, 85, 0.4)',
+          showConfirmButton: true,
+          confirmButtonText: 'Chấp nhận',
+          confirmButtonColor: '#2ecc71'
+        }).then(result => {
+          return false;
+        });
+      });
+    }, function (err) {
+      if (err.toString() === 'NotAllowedError: Permission denied') {
+        alertify.notify('Vui lòng mở quyền truy cập thiết bị nghe gọi', 'error', 5);
+      }
+    });
+
+  });
+
+  // 14. Listener
+  socket.on('server-send-accept-request-call-to-listener', function (response) {
+    Swal.close();
+
+    let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia).bind(navigator);
+    peer.on('call', function (call) {
+      getUserMedia({ video: true, audio: true }, function (stream) {
+        // Mo modal stream
+        $('#streamModal').modal('show');
+        // Chay stream cua listener
+        playVideoStream('local-stream', stream);
+
+        call.answer(stream); // Answer the call with an A/V stream.
+        call.on('stream', function (remoteStream) {
+          // Chay stream cua caller
+          playVideoStream('remote-stream', remoteStream);
+        });
+
+        // Dong modal => remove stream
+        $('#streamModal').on('hidden.bs.modal', function () {
+          closeVideoStream(stream);
+          Swal.fire({
+            title: `Đã kết thúc cuộc gọi với &nbsp <span style="color: #2ecc71;">${response.callerName}</span>!`,
+            allowOutsideClick: false,
+            backdrop: 'rgba(85, 85, 85, 0.4)',
+            showConfirmButton: true,
+            confirmButtonText: 'Chấp nhận',
+            confirmButtonColor: '#2ecc71'
+          }).then(result => {
+            return false;
+          });
+        });
+      }, function (err) {
+        if (err.toString() === 'NotAllowedError: Permission denied') {
+          alertify.notify('Vui lòng mở quyền truy cập thiết bị nghe gọi', 'error', 5);
+        }
+      });
+    });
   });
 
 });
