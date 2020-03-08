@@ -51,7 +51,7 @@ function imageChat(chatId) {
         if (isChatGroup) {
           $(`.right .chat[data-chat=${chatId}]`).append(
             `
-            <div class="bubble me bubble-image-file" data-mess-id="${data.message._id}">
+            <div class="bubble me bubble-image-file group" data-mess-id="${data.message._id}">
               <img src="/images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}"/>
               ${imageMessage}
             </div>
@@ -119,7 +119,7 @@ socket.on('response-chat-image', function (response) {
       increaseNumberMessageGroup(chatId);
       $(`.right .chat[data-chat=${chatId}]`).append(
         `
-        <div class="bubble you bubble-image-file" data-mess-id="${response.message._id}">
+        <div class="bubble you bubble-image-file group" data-mess-id="${response.message._id}">
           <img src="/images/users/${response.message.sender.avatar}" class="avatar-small" title="${response.message.sender.name}"/>
           ${imageMessage}
         </div>

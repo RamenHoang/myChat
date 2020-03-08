@@ -11,9 +11,14 @@ import socketio from 'socket.io';
 import initSockets from './sockets/index';
 import cookieParser from 'cookie-parser';
 import configSocketio from './config/socketio';
+import events from 'events';
+import * as configApp from './config/app';
 
 // Init app
 let app = express();
+
+// Set max connection event listener
+events.EventEmitter.defaultMaxListeners = configApp.app.max_event_listener;
 
 // Init server with socket.io and express app
 let server = http.createServer(app);

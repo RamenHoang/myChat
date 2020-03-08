@@ -26,7 +26,10 @@ function nineScrollRight(divId) {
     horizrailenabled: false,
     cursorcolor: '#ECECEC',
     cursorwidth: '7px',
-    scrollspeed: 50
+    scrollspeed: 50,
+    railpadding: {
+      right: 90
+    }
   });
   $(`.right .chat[data-chat=${divId}]`).scrollTop($(`.right .chat[data-chat=${divId}]`)[0].scrollHeight);
 }
@@ -191,6 +194,9 @@ function changeScreenChat() {
 
     // Bật chat tệp
     attachmentChat(chatId);
+
+    // Bật video chat
+    videoChat(chatId);
   });
 }
 
