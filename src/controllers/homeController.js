@@ -4,33 +4,34 @@ import request from 'request';
 
 let getICETurnServer = () => {
 	return new Promise(async (resolve, reject) => {
-		let o = {
-			format: "urls"
-		};
+		// let o = {
+		// 	format: "urls"
+		// };
 
-		let bodyString = JSON.stringify(o);
+		// let bodyString = JSON.stringify(o);
 		
-		let options = {
-			url: 'https://global.xirsys.net/_turn/myChat',
-			// host: "global.xirsys.net",
-			// path: "/_turn/myChat",
-			method: "PUT",
-			headers: {
-				"Authorization": "Basic " + Buffer.from("anhnguyenhoang:c0e42b52-6149-11ea-8d87-0242ac110004").toString("base64"),
-				"Content-Type": "application/json",
-				"Content-Length": bodyString.length
-			}
-		};
+		// let options = {
+		// 	url: 'https://global.xirsys.net/_turn/myChat',
+		// 	// host: "global.xirsys.net",
+		// 	// path: "/_turn/myChat",
+		// 	method: "PUT",
+		// 	headers: {
+		// 		"Authorization": "Basic " + Buffer.from("anhnguyenhoang:c0e42b52-6149-11ea-8d87-0242ac110004").toString("base64"),
+		// 		"Content-Type": "application/json",
+		// 		"Content-Length": bodyString.length
+		// 	}
+		// };
 
-		// Call a request to getICETurnServer
-		request(options, (error, response, body) => {
-			if (error) {
-				console.log('error when get ice', error);
-				return reject(error);
-			}
-			let bodyJson = JSON.parse(body);
-			resolve(bodyJson.v.iceServers);
-		});
+		// // Call a request to getICETurnServer
+		// request(options, (error, response, body) => {
+		// 	if (error) {
+		// 		console.log('error when get ice', error);
+		// 		return reject(error);
+		// 	}
+		// 	let bodyJson = JSON.parse(body);
+		// 	resolve(bodyJson.v.iceServers);
+		// });
+		resolve([]);
 	});
 }
 

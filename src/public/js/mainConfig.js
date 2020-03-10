@@ -26,10 +26,7 @@ function nineScrollRight(divId) {
     horizrailenabled: false,
     cursorcolor: '#ECECEC',
     cursorwidth: '7px',
-    scrollspeed: 50,
-    railpadding: {
-      right: 90
-    }
+    scrollspeed: 50
   });
   $(`.right .chat[data-chat=${divId}]`).scrollTop($(`.right .chat[data-chat=${divId}]`)[0].scrollHeight);
 }
