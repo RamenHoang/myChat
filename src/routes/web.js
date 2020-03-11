@@ -41,6 +41,7 @@ let initRoutes = (app) => {
 	router.get('/contact/read-more-contact-received', authValid.checkLoggedIn, contact.readMoreContactReceived);
 	router.put('/contact/accept-request-contact',authValid.checkLoggedIn, contact.acceptRequestContact);
 	router.delete('/contact/remove-contact', authValid.checkLoggedIn, contact.removeContact);
+	router.get('/contact/search-friends/:keyword', authValid.checkLoggedIn, contactValid.searchFriends, contact.searchFriends);
 
 	router.get('/notification/read-more', authValid.checkLoggedIn, notification.readMore);
 	router.put('/notification/mark-as-readed', authValid.checkLoggedIn, notification.markAsReaded);
