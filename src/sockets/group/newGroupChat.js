@@ -4,7 +4,7 @@ import { pushSocketIdToArray, emitNotifyToArray, removeSocketIdFromArray } from 
  *
  * @param {*} io from socket.io lib
  */
-let chatImage = io => {
+let newGroupChat = io => {
   let clients = {};
   io.on('connection', socket => {
     // Create an object which contains all clients. In each client, there are all socket.id.
@@ -16,35 +16,18 @@ let chatImage = io => {
     socket.on('new-group-created', data => {
       clients = pushSocketIdToArray(clients, data.groupChat._id, socket.id);
 
+
+      let response = {
+        groupChat: data.groupChat
+      };
+
       data.groupChat.members.forEach(member => {
         if (clients[member.userId] && member.userId !== data.groupChat.userId) {
           clients[member.userId].forEach(socketId => clients[data.groupChat._id].push(socketId));
+          emitNotifyToArray(clients, member.userId, io, 'response-new-group-created', response);
         }
       });
-    });
-
-    socket.on('chat-image', data => {
-      if (data.groupId) {
-        let response = {
-          currentGroupId: data.groupId,
-          currentUserId: socket.request.user._id,
-          message: data.message
-        }
-        // emit notification
-        if (clients[data.groupId]) {
-          emitNotifyToArray(clients, data.groupId, io, 'response-chat-image', response);
-        }
-      }
-      if (data.contactId) {
-        let response = {
-          currentUserId: socket.request.user._id,
-          message: data.message
-        }
-        // emit notification
-        if (clients[data.contactId]) {
-          emitNotifyToArray(clients, data.contactId, io, 'response-chat-image', response);
-        }
-      }
+      
     });
 
     socket.on('disconnect', () => {
@@ -57,4 +40,4 @@ let chatImage = io => {
   });
 };
 
-module.exports = chatImage;
+module.exports = newGroupChat;
