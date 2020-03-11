@@ -1,7 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
-*,
-*:before,
-*:after {
+*, *:before, *:after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -36,8 +34,7 @@ body {
   border-color: #2ECC71;
 }
 
-.custom-background-btn-primary:hover,
-.custom-background-btn-primary:focus {
+.custom-background-btn-primary:hover, .custom-background-btn-primary:focus {
   background-color: #2ECC71 !important;
   border-color: #2ECC71 !important;
 }
@@ -48,26 +45,13 @@ body {
   color: #fff;
 }
 
-.custom-background-btn-reset:hover,
-.custom-background-btn-reset:focus {
+.custom-background-btn-reset:hover, .custom-background-btn-reset:focus {
   background-color: #ff7675 !important;
   border-color: #ff7675 !important;
   color: #fff !important;
 }
 
-textarea:hover,
-input:hover,
-textarea:active,
-input:active,
-textarea:focus,
-input:focus,
-button:focus,
-a:focus,
-button:active,
-button:hover,
-label:focus,
-.btn:active,
-.btn.active {
+textarea:hover, input:hover, textarea:active, input:active, textarea:focus, input:focus, button:focus, a:focus, button:active, button:hover, label:focus, .btn:active, .btn.active {
   outline: none !important;
   -webkit-appearance: none !important;
   box-shadow: none !important;
@@ -89,8 +73,7 @@ label:focus,
   border: 1px solid white;
 }
 
-.swal-button--reject,
-.swal-button--remove {
+.swal-button--reject, .swal-button--remove {
   /*--reject & remove of me in js--*/
   background-color: #ff7979 !important;
 }
@@ -193,13 +176,7 @@ label:focus,
   margin: 10px 0px 0px 60px;
 }
 
-.contactPanel .user-add-new-contact,
-.contactPanel .user-talk,
-.contactPanel .user-remove-contact,
-.contactPanel .user-remove-request-contact-sent,
-.contactPanel .user-acccept-contact-received,
-.contactPanel .user-remove-request-sent,
-.contactPanel .user-reject-request-contact-received {
+.contactPanel .user-add-new-contact, .contactPanel .user-talk, .contactPanel .user-remove-contact, .contactPanel .user-remove-request-contact-sent, .contactPanel .user-acccept-contact-received, .contactPanel .user-remove-request-sent, .contactPanel .user-reject-request-contact-received {
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
@@ -322,6 +299,7 @@ label:focus,
   color: #333;
   padding: 5px;
 }
+
 .noti_content>div:hover {
   cursor: pointer;
   background: #eceff1;
@@ -481,7 +459,6 @@ label:focus,
   height: 100px;
 }
 
-
 /* The container */
 
 .radio-inline {
@@ -498,7 +475,6 @@ label:focus,
   user-select: none;
 }
 
-
 /* Hide the browser's default radio button */
 
 .radio-inline input {
@@ -506,7 +482,6 @@ label:focus,
   opacity: 0;
   cursor: pointer;
 }
-
 
 /* Create a custom radio button */
 
@@ -521,20 +496,17 @@ label:focus,
   border-radius: 50%;
 }
 
-
 /* On mouse-over, add a grey background color */
 
 .radio-inline:hover input~.checkmark {
   background-color: #ccc;
 }
 
-
 /* When the radio button is checked, add a blue background */
 
 .radio-inline input:checked~.checkmark {
   background-color: #2ECC71;
 }
-
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
 
@@ -544,13 +516,11 @@ label:focus,
   display: none;
 }
 
-
 /* Show the indicator (dot/circle) when checked */
 
 .radio-inline input:checked~.checkmark:after {
   display: block;
 }
-
 
 /* Style the indicator (dot/circle) */
 
@@ -662,8 +632,7 @@ label:focus,
   /*transform: translate(-50%, 0);*/
 }
 
-.left input,
-.left select {
+.left input, .left select {
   float: left;
   width: calc(100% - 50px);
   height: 40px;
@@ -767,8 +736,7 @@ label:focus,
   color: #999;
 }
 
-.left .people .person.active,
-.left .people .person:hover {
+.left .people .person.active, .left .people .person:hover {
   margin-top: -1px;
   margin-left: -1px;
   padding-top: 13px;
@@ -778,13 +746,11 @@ label:focus,
   padding-left: calc(10% + 1px);
 }
 
-.left .people .person.active span,
-.left .people .person:hover span {
+.left .people .person.active span, .left .people .person:hover span {
   background: transparent;
 }
 
-.left .people .person.active:after,
-.left .people .person:hover:after {
+.left .people .person.active:after, .left .people .person:hover:after {
   display: none;
 }
 
@@ -844,14 +810,12 @@ label:focus,
   flex-direction: column;
 }
 
-.image-chat,
-.attachments-chat {
+.image-chat, .attachments-chat {
   display: none !important;
   cursor: pointer;
 }
 
-.room-chat:hover,
-.room-chat:focus {
+.room-chat:hover, .room-chat:focus {
   text-decoration: none;
 }
 
@@ -866,6 +830,7 @@ label:focus,
 .group .show-image-chat {
   max-width: calc(100% - 34px);
 }
+
 .show-image-chat {
   max-width: 100%;
 }
@@ -1059,7 +1024,6 @@ label:focus,
 
 .right .bubble {
   max-width: 30%;
-
   word-wrap: break-word;
   font-size: 16px;
   position: relative;
@@ -1129,6 +1093,7 @@ label:focus,
 .right .bubble.me img.avatar-small {
   margin-left: 10px;
 }
+
 .right .bubble.you img.avatar-small {
   margin-right: 10px;
 }
@@ -1156,8 +1121,7 @@ label:focus,
   color: #999;
 }
 
-.right .conversation-start span:before,
-.right .conversation-start span:after {
+.right .conversation-start span:before, .right .conversation-start span:after {
   position: absolute;
   top: 10px;
   display: inline-block;
@@ -1175,13 +1139,22 @@ label:focus,
   right: 0;
 }
 
-#group-chat-friends,
-#friends-added {
+#group-chat-friends, #friends-added {
   list-style-type: none;
+}
+
+#group-chat-friends li {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  background-color: rgb(242, 240, 240);
+  padding: 2px 2px 4px 2px;
+  margin-bottom: 5px;
 }
 
 #friends-added li {
   margin-bottom: 15px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  padding: 5px 5px 10px 5px;
+  background-color: rgb(242, 240, 240);
 }
 
 .find-user-add-to-group {
@@ -1325,7 +1298,7 @@ label:focus,
   list-style-type: none;
 }
 
-.list-notifications li div{
+.list-notifications li div {
   border-bottom: 1px solid #dfe6e9;
   width: 100%;
   padding: 15px;
@@ -1348,13 +1321,7 @@ label:focus,
   float: right;
 }
 
-.read-more-notif, 
-.read-more-contact, 
-.read-more-contact-sent, 
-.read-more-contact-received, 
-.read-more-group-conversation,
-.read-more-user-conversation,
-.read-more-all-conversation {
+.read-more-notif, .read-more-contact, .read-more-contact-sent, .read-more-contact-received, .read-more-group-conversation, .read-more-user-conversation, .read-more-all-conversation {
   /* display: flex; */
   text-align: center;
   width: 90%;
@@ -1383,7 +1350,7 @@ label:focus,
   font-size: 14px !important;
 }
 
-.tab-content > .active {
+.tab-content>.active {
   background-color: #ffffff;
 }
 
@@ -1401,6 +1368,19 @@ label:focus,
   font-weight: bold;
 }
 
+@media (max-width: 991px) {
+  .list-user-added {
+    border-left: none;
+    border-top: 1px solid #ccc;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .result-searched, .form-search-to-add {
+    margin-right: 20px;
+    margin-left: 0px;
+  }
+}
+
 @media (max-width: 768px) {
   .person .name {
     display: none !important;
@@ -1408,8 +1388,7 @@ label:focus,
   .person .time {
     display: none !important;
   }
-  .person .preview
-  {
+  .person .preview {
     display: none !important;
   }
   .people .person {
@@ -1445,8 +1424,8 @@ label:focus,
   .container-fluid {
     margin-right: 0;
   }
-  .container-fluid > .navbar-collapse {
-    margin:  0 !important;
+  .container-fluid>.navbar-collapse {
+    margin: 0 !important;
   }
   .searchBox {
     width: 100px;
@@ -1458,26 +1437,22 @@ label:focus,
     display: flex;
     float: right;
   }
-  .nav > li > a {
+  .nav>li>a {
     padding: 10px 5px;
   }
   .navbar-nav {
     margin: 0;
   }
-
   .left a.create-group-chat {
     margin-left: 2px !important;
     margin-top: 5px;
   }
-  
   #notifications {
     right: -116px !important;
   }
-
   #notifications:before {
     margin-right: 120px;
   }
-
   .navbar-nav .open .dropdown-menu {
     position: absolute;
     z-index: 1000;
@@ -1486,7 +1461,6 @@ label:focus,
   .navbar-nav .open a:focus {
     background-color: transparent !important;
   }
-
   .modal-content .tab-content {
     top: 64px;
     position: relative;
@@ -1494,11 +1468,9 @@ label:focus,
   .modal-content {
     top: 40px;
   }
-
   .right .content-chat {
     padding: 15px 10px;
   }
-
   .left select {
     width: 80%;
   }

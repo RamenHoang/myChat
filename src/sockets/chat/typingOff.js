@@ -13,6 +13,16 @@ let typingOn = io => {
       clients = pushSocketIdToArray(clients, group._id, socket.id);
     });
 
+    socket.on('new-group-created', data => {
+      clients = pushSocketIdToArray(clients, data.groupChat._id, socket.id);
+
+      data.groupChat.members.forEach(member => {
+        if (clients[member.userId] && member.userId !== data.groupChat.userId) {
+          clients[member.userId].forEach(socketId => clients[data.groupChat._id].push(socketId));
+        }
+      });
+    });
+
     socket.on('user-is-not-typing', data => {
       if (data.groupId) {
         let response = {
