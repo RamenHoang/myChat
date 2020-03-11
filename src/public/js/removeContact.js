@@ -27,6 +27,24 @@ function removeContact() {
               $('#contacts ul.contactList').find(`li[data-uid=${targetId}]`).remove();
               // 3. Emit sự kiện lên server
               socket.emit('remove-contact', { contactId: targetId });
+
+              // Xử lý realtime chat khi xoá danh bạ
+              // 1. Xoá khỏi leftSide
+              $(`#all-chat ul`).find(`li[data-chat=${targetId}]`).parent().remove();
+              $(`#user-chat ul`).find(`li[data-chat=${targetId}]`).parent().remove();
+
+              // 2. Xoá khỏi rightSide
+              $('#screen-chat').find(`div[data-chat=${targetId}]`).remove();
+
+              // 3. Chuyển hướng sang màn hình chat tiếp theo
+              if ($('#select-type-chat').val() === 'all-chat') {
+                if ($('#all-chat ul').find('li').length > 0) 
+                  $('#all-chat ul').find('li')[0].click();
+              }
+              if ($('#select-type-chat').val() === 'user-chat') {
+                if ($('#user-chat ul').find('li').length > 0) 
+                  $('#user-chat ul').find('li')[0].click();
+              }
             }
           }
         });
@@ -42,6 +60,24 @@ socket.on('response-remove-contact', function(user) {
   decreaseNumberNotifContact('count-contacts');
   // 2. Xoá danh bạ khỏi màn hình danh bạ
   $('#contacts ul.contactList').find(`li[data-uid=${user.id}]`).remove();
+
+  // Xử lý realtime chat khi xoá danh bạ
+  // 1. Xoá khỏi leftSide
+  $(`#all-chat ul`).find(`li[data-chat=${user.id}]`).parent().remove();
+  $(`#user-chat ul`).find(`li[data-chat=${user.id}]`).parent().remove();
+
+  // 2. Xoá khỏi rightSide
+  $('#screen-chat').find(`div[data-chat=${user.id}]`).remove();
+
+  // 3. Chuyển hướng sang màn hình chat tiếp theo
+  if ($('#select-type-chat').val() === 'all-chat') {
+    if ($('#all-chat ul').find('li').length > 0) 
+      $('#all-chat ul').find('li')[0].click();
+  }
+  if ($('#select-type-chat').val() === 'user-chat') {
+    if ($('#user-chat ul').find('li').length > 0) 
+      $('#user-chat ul').find('li')[0].click();
+  }
 });
 
 $(document).ready(function() {

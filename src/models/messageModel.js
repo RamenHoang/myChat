@@ -80,6 +80,24 @@ MessageSchema.statics = {
 				'receiver.avatar': avatar
 			}
 		).exec();
+	},
+	removeMessage(userId, contactId) {
+		return this.deleteMany({
+			$or: [
+				{
+					$and: [
+						{'senderId': userId},
+						{'receiverId': contactId}
+					]
+				},
+				{
+					$and: [
+						{'senderId': contactId},
+						{'receiverId': userId}
+					]
+				}
+			]
+		}).exec();
 	}
 }
 

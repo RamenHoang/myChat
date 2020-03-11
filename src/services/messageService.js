@@ -265,9 +265,21 @@ let addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
   });
 }
 
+let removeMessage = (userId, contactId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await MessageModel.model.removeMessage(userId, contactId);
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
   getAllConversations: getAllConversations,
   addNewTextEmoji: addNewTextEmoji,
   addNewImage: addNewImage,
-  addNewAttachment: addNewAttachment
+  addNewAttachment: addNewAttachment,
+  removeMessage: removeMessage
 }

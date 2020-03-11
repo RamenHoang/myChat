@@ -39,6 +39,9 @@ body {
   }
 }
 
+.modal {
+  top: 100px;
+}
 .modal-title {
   color: #2c3e50;
 }
@@ -333,7 +336,7 @@ hr {
 
 @media (max-width:400px) {
   .login .modal-dialog {
-    width: 100%;
+    width: 95%;
   }
 }
 
