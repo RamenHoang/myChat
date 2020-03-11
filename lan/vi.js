@@ -9,7 +9,9 @@ export const transValidation = {
 	update_phone: 'Số điện thoại chỉ có độ dài là 10 số',
 	new_password_invalid: 'Mật khẩu mới không được trùng với mật khẩu cũ',
 	keyword_find_user: 'Lỗi kí tự tìm kiếm. Chỉ cho phép chữ cái và số',
-	message_text_emoji_incorrect: 'Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự. Tối đa 400 kí tự.'
+	message_text_emoji_incorrect: 'Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự. Tối đa 400 kí tự.',
+	add_new_group_users_incorrect: 'Tối thiểu 2 bạn người để tạo nhóm',
+	add_new_group_name_incorrect: 'Tên nhóm có độ dài từ 5 đến 30 kí tự và không chứa các kí tự đặc biệt'
 };
 
 export const transErrors = {
