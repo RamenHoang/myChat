@@ -19,7 +19,7 @@ function typingOff(chatId) {
 }
 
 socket.on('response-user-is-typing', function (response) {
-  let messageTyping = `<div class="bubble you bubble-typing-gif" style="padding: 0;margin: 0;">
+  let messageTyping = `<div class="bubble you bubble-typing-gif" >
     <img src="/images/chat/ezgif.com-resize.gif">
   </div>`;
   let chatId;

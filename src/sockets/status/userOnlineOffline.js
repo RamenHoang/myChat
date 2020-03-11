@@ -13,12 +13,13 @@ let userOnlineOffline = io => {
       clients = pushSocketIdToArray(clients, group._id, socket.id);
     });
 
-    let listUserOnline = Object.keys(clients);
-    // 1. Emit to user after loggin or F5
-    socket.emit('server-send-list-users-online', listUserOnline);
-    // 2. Emit to all others users when a new user is online
-    socket.broadcast.emit('server-send-when-new-user-online', socket.request.user._id);
-    
+    socket.on('check-onoff', () => {
+      let listUserOnline = Object.keys(clients);
+      // 1. Emit to user after loggin or F5
+      socket.emit('server-send-list-users-online', listUserOnline);
+      // 2. Emit to all others users when a new user is online
+      socket.broadcast.emit('server-send-when-new-user-online', socket.request.user._id);
+    })
 
     socket.on('disconnect', () => {
       // Remove socketId while disconnect

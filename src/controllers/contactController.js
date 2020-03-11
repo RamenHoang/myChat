@@ -1,4 +1,4 @@
-import { contact } from '../services/services';
+import { contact, message } from '../services/services';
 import { validationResult } from 'express-validator/check';
 
 let findUsersContact =  async (req, res) => {
@@ -104,12 +104,14 @@ let acceptRequestContact = async (req, res) => {
 let removeContact = async (req, res) => {
 	try {
 		let deleteStatus = await contact.removeContact(req.user._id, req.body.uid);
+		await message.removeMessage(req.user._id, req.body.uid);
 		if (deleteStatus.n) {
 			res.status(200).send({ success: true });
 		} else {
 			console.log('error from removeContact at Controller');
 		}
 	} catch (error) {
+		console.log(error);
 		res.status(500).send(error);
 	}
 }

@@ -194,5 +194,8 @@ $(document).ready(function () {
   // Thay đổi màn hình chat
   changeScreenChat();
 
-  $('ul.people').find('a')[0].click();
+  if ($('ul.people').find('a').length > 0) {
+    $('ul.people').find('a')[0].click();
+  }
+  socket.emit('check-onoff');
 });
