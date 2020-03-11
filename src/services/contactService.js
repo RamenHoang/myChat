@@ -238,6 +238,29 @@ let removeContact = (userId, contactId) => {
 	});
 }
 
+let searchFriends = (currentUserId, keyword) => {
+	return new Promise(async (resolve, reject) => {
+		let friendUserIds = [];
+		let contactsByUser = await ContactModel.findFriendsByUserId(currentUserId);
+		contactsByUser.forEach((contact) => {
+			friendUserIds.push(contact.userId);
+			friendUserIds.push(contact.contactId);
+		});
+
+		// make Ids is unique
+		friendUserIds = friendUserIds.filter((cur, index, arr) => {
+			if (cur == currentUserId) {
+				return false;
+			}
+			if (arr.indexOf(cur, index + 1) === -1) return true;
+			return false;
+		});
+
+		let users = await UserModel.findAllFriends(friendUserIds, keyword);
+		resolve(users);
+	});
+}
+
 module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
@@ -253,6 +276,7 @@ module.exports = {
 	readMoreContactSent: readMoreContactSent,
 	readMoreContactReceived: readMoreContactReceived,
 	acceptRequestContact: acceptRequestContact,
-	removeContact: removeContact
+	removeContact: removeContact,
+	searchFriends: searchFriends
 }
 

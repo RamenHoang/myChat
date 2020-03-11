@@ -665,7 +665,7 @@ label:focus,
 .left input,
 .left select {
   float: left;
-  width: 80%;
+  width: calc(100% - 50px);
   height: 40px;
   padding: 0 15px;
   border: 1px solid #e6e6e6;
@@ -1497,5 +1497,9 @@ label:focus,
 
   .right .content-chat {
     padding: 15px 10px;
+  }
+
+  .left select {
+    width: 80%;
   }
 }
