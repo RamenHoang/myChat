@@ -49,8 +49,10 @@ let initRoutes = (app) => {
 	router.post('/message/add-new-text-emoji', authValid.checkLoggedIn, messageValid.checkMessageLength, message.addNewTextEmoji);
 	router.post('/message/add-new-image', authValid.checkLoggedIn, message.addNewImage);
 	router.post('/message/add-new-attachment', authValid.checkLoggedIn, message.addNewAttachment);
+	router.get('/message/read-more-all-conversation', authValid.checkLoggedIn, message.readMoreAllConversations);
 
 	router.post('/group-chat/add-new', authValid.checkLoggedIn, groupChatValid.addNewGroup, groupChat.addNewGroup);
+
 
 	app.use('/', router);
 }

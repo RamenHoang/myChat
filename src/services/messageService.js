@@ -276,10 +276,68 @@ let removeMessage = (userId, contactId) => {
   });
 }
 
+let readMoreAllConversations = (userId, skipPersonal, skipGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Conversations include personal and group conversations
+      // => Get all contacts of current user as personal conversations
+      let conversations = await ContactModel.readMoreContact(userId, skipPersonal);
+      // => Extract only needed field {_id, username, avatar, address}
+      conversations = conversations.map(async (conversation) => {
+        let conversationItem;
+        if (conversation.contactId == userId) {
+          conversationItem = await UserModel.getNormalUserDataById(conversation.userId);
+        }
+        else {
+          conversationItem = await UserModel.getNormalUserDataById(conversation.contactId);
+        }
+        conversationItem.updatedAt = conversation.updatedAt;
+        return conversationItem;
+      });
+
+      let userConversations = await Promise.all(conversations);
+
+      // => Get group conversations
+      let groupConversations = await ChatGroupModel.getMoreChatGroups(userId, skipGroup);
+
+      // Join personal and group conversations to all conversations, descending sorted by updatedAt
+      let allConversations = userConversations.concat(groupConversations).sort((a, b) => {
+        return b.updatedAt - a.updatedAt;
+      });
+
+      // => Push messages to each conversations
+      let allConversationsPromise = allConversations.map(async (conversation) => {
+        conversation = conversation.toObject();
+        if (conversation.members) {
+          let getMessages = await MessageModel.model.getMessagesInGroup(conversation._id);
+          conversation.messages = getMessages.reverse();
+        } else {
+          let getMessages = await MessageModel.model.getMessagesInPersonal(userId, conversation._id);
+          conversation.messages = getMessages.reverse();
+        }
+        return conversation;
+      });
+
+      let allconversationWithMessages = await Promise.all(allConversationsPromise);
+
+      // => descending sorted all conversations by updatedAt again
+      allconversationWithMessages = allconversationWithMessages.sort((a, b) => {
+        return b.updatedAt - a.updatedAt;
+      });
+
+      resolve(allconversationWithMessages);
+    } catch (error) {
+      console.log('Get contact error: ', error);
+      reject(error)
+    }
+  });
+}
+
 module.exports = {
   getAllConversations: getAllConversations,
   addNewTextEmoji: addNewTextEmoji,
   addNewImage: addNewImage,
   addNewAttachment: addNewAttachment,
-  removeMessage: removeMessage
+  removeMessage: removeMessage,
+  readMoreAllConversations: readMoreAllConversations
 }

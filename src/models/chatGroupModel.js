@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const LIMIT_CONVERSASION_TAKEN = 5;
+const LIMIT_CONVERSASION_TAKEN = 10;
 let Schema = mongoose.Schema;
 
 let ChatGroupSchema = new Schema({
@@ -28,6 +28,11 @@ ChatGroupSchema.statics = {
 	},
 	updateWhenHasNewMessage(chatGroupId, newMessageAmount) {
 		return this.findByIdAndUpdate(chatGroupId, {'messageAmount': newMessageAmount, 'updatedAt': Date.now()}).exec();
+	},
+	getMoreChatGroups(userId, skip) {
+		return this.find({
+			'members': {$elemMatch: {'userId': userId}}
+		}).sort({'updatedAt': -1}).skip(skip).limit(LIMIT_CONVERSASION_TAKEN).exec();
 	}
 }
 
