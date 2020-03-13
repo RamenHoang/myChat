@@ -50,6 +50,7 @@ let initRoutes = (app) => {
 	router.post('/message/add-new-image', authValid.checkLoggedIn, message.addNewImage);
 	router.post('/message/add-new-attachment', authValid.checkLoggedIn, message.addNewAttachment);
 	router.get('/message/read-more-all-conversation', authValid.checkLoggedIn, message.readMoreAllConversations);
+	router.get('/message/read-more', authValid.checkLoggedIn, message.readMore);
 
 	router.post('/group-chat/add-new', authValid.checkLoggedIn, groupChatValid.addNewGroup, groupChat.addNewGroup);
 
