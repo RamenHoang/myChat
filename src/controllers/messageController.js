@@ -56,12 +56,10 @@ let storageImageChat = multer.diskStorage({
     callback(null, image_name);
   }
 });
-
 let imageMessageUploadFile = multer({
   storage: storageImageChat,
   limits: { fileSize: app.image_message_limit_size }
 }).single('my-image-chat');
-
 let addNewImage = (req, res) => {
   imageMessageUploadFile(req, res, async (error) => {
     if (error) {
@@ -105,7 +103,6 @@ let storageAttachmentChat = multer.diskStorage({
     callback(null, attachment_name);
   }
 });
-
 let attachmentMessageUploadFile = multer({
   storage: storageAttachmentChat,
   limits: { fileSize: app.attachment_message_limit_size }
@@ -161,10 +158,10 @@ let readMoreAllConversations = async (req, res) => {
       bufferToBase64: bufferToBase64
     }
 
-    let leftSideData = await renderFile('src/views/main/readMoreConversations/_leftSide.ejs', dataToRender)
-    let rightSideData = await renderFile('src/views/main/readMoreConversations/_rightSide.ejs', dataToRender)
-    let imageModalData = await renderFile('src/views/main/readMoreConversations/_imageModal.ejs', dataToRender)
-    let attachmentModalData = await renderFile('src/views/main/readMoreConversations/_attachmentModal.ejs', dataToRender)
+    let leftSideData = await renderFile('src/views/main/readMoreConversations/_leftSide.ejs', dataToRender);
+    let rightSideData = await renderFile('src/views/main/readMoreConversations/_rightSide.ejs', dataToRender);
+    let imageModalData = await renderFile('src/views/main/readMoreConversations/_imageModal.ejs', dataToRender);
+    let attachmentModalData = await renderFile('src/views/main/readMoreConversations/_attachmentModal.ejs', dataToRender);
 
 
     res.status(200).send({
@@ -178,9 +175,36 @@ let readMoreAllConversations = async (req, res) => {
   }
 }
 
+let readMore = async (req, res) => {
+  try {
+    let moreMessages = await message.readMore(req.user._id, req.query.targetId, req.query.skipMess, req.query.chatInGroup);
+
+    let dataToRender = {
+      messages: moreMessages,
+      bufferToBase64: bufferToBase64,
+      user: req.user,
+      isGroup: (req.query.chatInGroup === 'true')
+    }
+
+    let rightSideData = await renderFile('src/views/main/readMoreMessages/_rightSide.ejs', dataToRender);
+    let imageModalData = await renderFile('src/views/main/readMoreMessages/_imageModal.ejs', dataToRender);
+    let attachmentModalData = await renderFile('src/views/main/readMoreMessages/_attachmentModal.ejs', dataToRender);
+
+    res.status(200).send({
+      rightSideData: rightSideData,
+      imageModalData: imageModalData,
+      attachmentModalData: attachmentModalData
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
 module.exports = {
   addNewTextEmoji: addNewTextEmoji,
   addNewImage: addNewImage,
   addNewAttachment: addNewAttachment,
-  readMoreAllConversations: readMoreAllConversations
+  readMoreAllConversations: readMoreAllConversations,
+  readMore: readMore
 }

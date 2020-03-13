@@ -888,7 +888,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 }
 
 .bubble-typing-gif {
-  margin-left: -20px !important;
+  /* margin-left: -20px !important; */
   background-color: #FFF !important;
 }
 
@@ -1023,7 +1023,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 }
 
 .right .bubble {
-  max-width: 30%;
+  max-width: 40%;
   word-wrap: break-word;
   font-size: 16px;
   position: relative;
@@ -1366,6 +1366,11 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 .message-time-realtime {
   color: #e74c3c !important;
   font-weight: bold;
+}
+
+.message-loading {
+  display: block;
+  margin: 0 auto;
 }
 
 @media (max-width: 991px) {

@@ -134,7 +134,7 @@ let addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
     let imageBuffer = await fsExtra.readFile(messageVal.path);
     let imageContentType = messageVal.mimetype;
     let imageName = messageVal.originalname;
-    
+
     try {
       let receiver, newMessageItem;
       if (isChatGroup) {
@@ -202,7 +202,7 @@ let addNewAttachment = (sender, receiverId, messageVal, isChatGroup) => {
     let attachmentBuffer = await fsExtra.readFile(messageVal.path);
     let attachmentContentType = messageVal.mimetype;
     let attachmentName = messageVal.originalname;
-    
+
     try {
       let receiver, newMessageItem;
       if (isChatGroup) {
@@ -333,11 +333,36 @@ let readMoreAllConversations = (userId, skipPersonal, skipGroup) => {
   });
 }
 
+let readMore = (userId, conversationId, skipMess, isGroup) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      skipMess = parseInt(skipMess, 10);
+      if (!skipMess) skipMess = 0;
+
+      if (isGroup === 'true') {
+        let moreGroupMessages = await MessageModel.model.getMoreMessagesInGroup(conversationId, skipMess);
+        moreGroupMessages = moreGroupMessages.reverse();
+
+        return resolve(moreGroupMessages);
+      } else {
+        let morePersonalMessages = await MessageModel.model.getMoreMessagesInPersonal(userId, conversationId, skipMess);
+        morePersonalMessages = morePersonalMessages.reverse();
+        
+        return resolve(morePersonalMessages);
+      }
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
   getAllConversations: getAllConversations,
   addNewTextEmoji: addNewTextEmoji,
   addNewImage: addNewImage,
   addNewAttachment: addNewAttachment,
   removeMessage: removeMessage,
-  readMoreAllConversations: readMoreAllConversations
+  readMoreAllConversations: readMoreAllConversations,
+  readMore: readMore
 }

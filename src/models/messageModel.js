@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 let Schema = mongoose.Schema;
-const LIMIT_MESSAGE_TAKEN = 30;
+const LIMIT_MESSAGE_TAKEN = 15;
 
 let MessageSchema = new Schema({
 	senderId: 	String,
@@ -98,6 +98,27 @@ MessageSchema.statics = {
 				}
 			]
 		}).exec();
+	},
+	getMoreMessagesInPersonal(senderId, receiverId, skipMess) {
+		return this.find({
+			$or: [
+				{
+					$and: [
+						{'senderId': senderId},
+						{'receiverId': receiverId}
+					]
+				},
+				{
+					$and: [
+						{'senderId': receiverId},
+						{'receiverId': senderId}
+					]
+				}
+			]
+		}).sort({'createdAt': -1}).skip(skipMess).limit(LIMIT_MESSAGE_TAKEN).exec();
+	},
+	getMoreMessagesInGroup(groupId, skipMess) {
+		return this.find({'receiverId': groupId}).sort({'createdAt': -1}).skip(skipMess).limit(LIMIT_MESSAGE_TAKEN).exec();
 	}
 }
 
