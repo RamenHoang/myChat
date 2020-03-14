@@ -151,6 +151,7 @@ function changeTypeChat() {
 function changeScreenChat() {
   $('.room-chat').unbind('click').on('click', function () {
     let chatId = $(this).find('li').data('chat');
+
     $('.person').removeClass('active');
     $(`.person[data-chat=${chatId}]`).addClass('active');
     $(this).tab('show');
@@ -169,7 +170,21 @@ function changeScreenChat() {
 
     // Bật video chat
     videoChat(chatId);
+
   });
+}
+
+function alertAddMoreFriends() {
+  if ($('#all-chat').find('li').length === 0) {
+    Swal.fire({
+      title: 'Bạn chưa có bạn bè nào. Tìm vài người bạn thôi!',
+      showConfirmButton: true,
+      confirmButtonColor: '#2ACC77'
+    })
+      .then(result => {
+        $('#contactsModal').modal('show');
+      });
+  }
 }
 
 $(document).ready(function () {
@@ -197,6 +212,9 @@ $(document).ready(function () {
 
   // Thay đổi màn hình chat
   changeScreenChat();
+
+  // GỢi ý kết bạn
+  alertAddMoreFriends();
 
   if ($('ul.people').find('a').length > 0) {
     $('ul.people').find('a')[0].click();

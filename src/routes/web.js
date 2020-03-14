@@ -42,6 +42,8 @@ let initRoutes = (app) => {
 	router.put('/contact/accept-request-contact',authValid.checkLoggedIn, contact.acceptRequestContact);
 	router.delete('/contact/remove-contact', authValid.checkLoggedIn, contact.removeContact);
 	router.get('/contact/search-friends/:keyword', authValid.checkLoggedIn, contactValid.searchFriends, contact.searchFriends);
+	router.get('/contact/findConversations/:keyword', authValid.checkLoggedIn, contactValid.searchFriends, contact.findConversations);
+	router.get('/contact/search-more-friends/:keyword', authValid.checkLoggedIn, contact.searchMoreFriends);
 
 	router.get('/notification/read-more', authValid.checkLoggedIn, notification.readMore);
 	router.put('/notification/mark-as-readed', authValid.checkLoggedIn, notification.markAsReaded);
@@ -51,8 +53,12 @@ let initRoutes = (app) => {
 	router.post('/message/add-new-attachment', authValid.checkLoggedIn, message.addNewAttachment);
 	router.get('/message/read-more-all-conversation', authValid.checkLoggedIn, message.readMoreAllConversations);
 	router.get('/message/read-more', authValid.checkLoggedIn, message.readMore);
+	router.get('/message/get-conversation-with-message', authValid.checkLoggedIn, message.getConversationWithMess);
 
 	router.post('/group-chat/add-new', authValid.checkLoggedIn, groupChatValid.addNewGroup, groupChat.addNewGroup);
+	router.put('/group-chat/add-more-members', authValid.checkLoggedIn, groupChat.addMoreMembers);
+
+	
 
 
 	app.use('/', router);

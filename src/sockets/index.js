@@ -11,7 +11,7 @@ import chatAttachment from './chat/chatAttachment';
 import chatVideo from './chat/chatVideo';
 import userOnlineOffline from './status/userOnlineOffline';
 import newGroupChat from './group/newGroupChat';
-
+import newMemberAdded from './group/newMemberAdded';
 /**
  * 
  * @param {*} io  from socket.io lib
@@ -30,6 +30,7 @@ let initSockets = (io) => {
     chatVideo(io);
     userOnlineOffline(io);
     newGroupChat(io);
+    newMemberAdded(io);
 }
 
 module.exports = initSockets;

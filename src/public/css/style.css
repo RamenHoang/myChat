@@ -215,6 +215,44 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
   margin: 10px 0px 5px 2px;
 }
 
+.contactPanelMember {
+  max-width: 100%;
+  height: auto;
+  /* margin: 5px 0px 0px 5px; */
+}
+
+.contactPanelMember .user-avatar {
+  width: 100%;
+}
+
+.contactPanelMember .user-avatar img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #bdc3c7;
+  display: block;
+  margin: 0 auto;
+}
+
+.contactPanelMember div.user-name {
+  width: 100%;
+  float: left;
+  /* margin: 0px 0px 0px 10px; */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  
+}
+
+.contactPanelMember span.user-name {
+  width: fit-content;
+  display: block;
+  margin: 0 auto;
+}
+
+
 .show-number-contacts {
   font-weight: bold;
   color: red;
@@ -332,6 +370,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 #search-results {
   display: none;
   min-width: 95%;
+  height: fit-content;
   float: right;
   position: absolute;
   margin-top: 10px;
@@ -365,7 +404,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 }
 
 .search_content {
-  height: 200px;
+  height: fit-content;
   background-color: #fff;
   overflow: auto;
 }
@@ -788,7 +827,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 
 .right .content-chat {
   width: 100%;
-  height: 80%;
+  height: 85%;
   padding: 15px 29px;
   background-color: #fff;
 }
@@ -832,7 +871,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 }
 
 .show-image-chat {
-  max-width: 100%;
+  width: 200px;
 }
 
 #loader {
@@ -958,7 +997,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 .right .write {
   position: absolute;
   bottom: 9px;
-  height: 12%;
+  height: 5%;
   padding-left: 8px;
   border: 1px solid #e6e6e6;
   background-color: #eceff1;
@@ -974,7 +1013,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 .emojionearea.emojionearea-inline {
   font-size: 16px;
   float: left;
-  width: 100%;
+  width: calc(100% - 140px);
   height: 70%;
   padding: 0 10px;
   color: #1a1a1a;
@@ -1010,9 +1049,10 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 
 .right .write .icons {
   height: 30%;
-  float: left;
+  float: right;
   padding-bottom: 4px;
   margin-left: 10px;
+  margin-top: 13px;
 }
 
 .right .write .icons i {
@@ -1143,6 +1183,16 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
   list-style-type: none;
 }
 
+#group-chat-more-friends {
+  list-style-type: none;
+}
+
+#friend-added {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 #group-chat-friends li {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
   background-color: rgb(242, 240, 240);
@@ -1157,8 +1207,17 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
   background-color: rgb(242, 240, 240);
 }
 
+#friend-added li {
+  margin-right: 10px;
+  width: 22%;
+  margin-bottom: 15px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  padding: 5px 5px 10px 5px;
+  background-color: rgb(242, 240, 240);
+}
+
 .find-user-add-to-group {
-  margin-left: 10px;
+  margin-left: 35px;
   padding: 2px;
   background-color: #fff;
 }
@@ -1236,6 +1295,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 }
 
 .list-user-added {
+  width: 50%;
   display: none;
   margin-left: 30px;
   border-left: 1px solid #ccc;
@@ -1259,6 +1319,36 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 }
 
 .list-user-added button#btn-cancel-group-chat {
+  border-color: #ff7675;
+  background-color: #ff7675;
+  margin-left: 5px;
+}
+
+.list-user-added-member {
+  width: 50%;
+  display: block;
+  margin-left: 30px;
+  border-left: 1px solid #ccc;
+}
+
+.list-user-added-member input {
+  box-shadow: none;
+}
+
+.list-user-added-member input:hover {
+  border-color: #576574 !important;
+}
+
+.list-user-added-member input:focus {
+  border-color: #ccc;
+}
+
+.list-user-added-member button#btn-create-group-chat {
+  border-color: #2ACC77;
+  background-color: #2ACC77;
+}
+
+.list-user-added-member button#btn-cancel-group-chat {
   border-color: #ff7675;
   background-color: #ff7675;
   margin-left: 5px;
@@ -1379,14 +1469,28 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
     border-top: 1px solid #ccc;
     margin-left: 0;
     margin-top: 10px;
+    width: 100%;
   }
+
+  .find-user-add-to-group {
+    margin-left: 10px;
+  }
+   
+  .list-user-added-member {
+    border-left: none;
+    border-top: 1px solid #ccc;
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+
   .result-searched, .form-search-to-add {
     margin-right: 20px;
     margin-left: 0px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .person .name {
     display: none !important;
   }
@@ -1408,7 +1512,10 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
     width: calc(100% - 50px);
   }
   .right .bubble {
-    max-width: 70%;
+    max-width: 65%;
+  }
+  .show-image-chat {
+    width: 100%;
   }
   .right .chat {
     margin-right: 0px !important;
@@ -1447,6 +1554,10 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
   }
   .navbar-nav {
     margin: 0;
+    width: 150px;
+  }
+  .searchBox {
+    width: 160px;
   }
   .left a.create-group-chat {
     margin-left: 2px !important;
@@ -1478,5 +1589,122 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
   }
   .left select {
     width: 80%;
+  }
+  .right .content-chat {
+    height: 80%;
+  }
+  .right .write {
+    height: 10%;
+  }
+  .emojionearea.emojionearea-inline {
+    width: 100%;
+    height: 65%;
+  }
+  .right .write .icons {
+    margin-top: 0px;
+  }
+}
+
+/* Style the Image Used to Trigger the Modal */
+
+.bubble-image {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.bubble-image:hover {
+  opacity: 0.85;
+}
+
+/* The Modal (background) */
+
+.modalImg {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.9);
+  /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+
+.modalImg-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* display: block; */
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+
+#caption-modal-img {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+
+.modalImg-content, #caption-modal-img {
+  /* animation-name: zoom; */
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0)
+  }
+  to {
+    transform: scale(1)
+  }
+}
+
+/* The Close Button */
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close-modal:hover, .close-modal:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+
+@media only screen and (max-width: 700px) {
+  .modalImg-content {
+    width: 100%;
   }
 }

@@ -34,7 +34,19 @@ let updatePassword = (id, data) => {
 	});
 }
 
+let getNormalUserDataById = targetId => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let user = await UserModel.getNormalUserDataById(targetId);
+			resolve(user);
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
 module.exports = {
 	updateUser: updateUser,
-	updatePassword: updatePassword
+	updatePassword: updatePassword,
+	getNormalUserDataById: getNormalUserDataById
 }

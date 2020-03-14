@@ -4,7 +4,7 @@ import NotifictionModel from '../models/notificationModel';
 
 let findUsersContact = (currentUserId, keyword) => {
 	return new Promise(async (resolve, reject) => {
-		let beFriendUserIds = [ currentUserId ];
+		let beFriendUserIds = [currentUserId];
 		let contactsByUser = await ContactModel.findAllByUserId(currentUserId);
 		contactsByUser.forEach((contact) => {
 			beFriendUserIds.push(contact.userId);
@@ -177,7 +177,7 @@ let readMoreContactSent = (userId, skip) => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			let newContacts = await ContactModel.readMoreContactSent(userId, skip);
-			
+
 			console.log(newContacts);
 
 			newContacts = newContacts.map(async (contact) => {
@@ -261,6 +261,33 @@ let searchFriends = (currentUserId, keyword) => {
 	});
 }
 
+let searchMoreFriends = (userId, keyword, memberIds) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			let friendUserIds = [];
+			let contactsByUser = await ContactModel.searchMoreFriendsByUserId(userId, memberIds);
+			contactsByUser.forEach((contact) => {
+				friendUserIds.push(contact.userId);
+				friendUserIds.push(contact.contactId);
+			});
+
+			// make Ids is unique
+			friendUserIds = friendUserIds.filter((cur, index, arr) => {
+				if (cur == userId) {
+					return false;
+				}
+				if (arr.indexOf(cur, index + 1) === -1) return true;
+				return false;
+			});
+
+			let users = await UserModel.findAllFriends(friendUserIds, keyword);
+			resolve(users);
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
 module.exports = {
 	findUsersContact: findUsersContact,
 	addNew: addNew,
@@ -277,6 +304,7 @@ module.exports = {
 	readMoreContactReceived: readMoreContactReceived,
 	acceptRequestContact: acceptRequestContact,
 	removeContact: removeContact,
-	searchFriends: searchFriends
+	searchFriends: searchFriends,
+	searchMoreFriends: searchMoreFriends
 }
 

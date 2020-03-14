@@ -11,7 +11,8 @@ export const transValidation = {
 	keyword_find_user: 'Lỗi kí tự tìm kiếm. Chỉ cho phép chữ cái và số',
 	message_text_emoji_incorrect: 'Tin nhắn không hợp lệ. Đảm bảo tối thiểu 1 kí tự. Tối đa 400 kí tự.',
 	add_new_group_users_incorrect: 'Tối thiểu 2 bạn người để tạo nhóm',
-	add_new_group_name_incorrect: 'Tên nhóm có độ dài từ 5 đến 30 kí tự và không chứa các kí tự đặc biệt'
+	add_new_group_name_incorrect: 'Tên nhóm có độ dài từ 5 đến 30 kí tự và không chứa các kí tự đặc biệt',
+	keyword_find_conversations: 'Lỗi kí tự tìm kiếm. Chỉ cho phép chữ cái và số'
 };
 
 export const transErrors = {

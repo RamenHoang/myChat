@@ -1,5 +1,5 @@
 import { validationResult } from 'express-validator/check';
-import { groupChat } from '../services/services';
+import { groupChat, message } from '../services/services';
 
 let addNewGroup = async (req, res) => {
   let errors = [];
@@ -20,6 +20,30 @@ let addNewGroup = async (req, res) => {
   }
 }
 
+let addMoreMembers = async (req, res) => {
+  try {
+    let groupId = req.body.groupId;
+    let member = req.body.member;
+    let sender = {
+      id: req.user._id,
+      avatar: req.user.avatar,
+      name: req.user.username
+    }
+    let messageVal = req.body.messageVal;
+
+    let addStatus = await groupChat.addMoreMembers(groupId, member);
+    let newMessage = await message.addNewTextEmoji(sender, groupId, messageVal, true);
+    res.status(200).send({
+      status: !!addStatus,
+      message: newMessage
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
 module.exports = {
-  addNewGroup: addNewGroup
+  addNewGroup: addNewGroup,
+  addMoreMembers: addMoreMembers
 }

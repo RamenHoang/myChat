@@ -96,9 +96,17 @@ function callCreateGroupChat() {
 
     let arrIds = [];
     $('ul#friends-added').find('li').each(function (index, item) {
-      arrIds.push({ 'userId': $(item).data('uid') })
+      arrIds.push({
+        'userId': $(item).data('uid'),
+        'username': $(item).find('span.user-name').text(),
+        'avatar': $(item).find('div.user-avatar img').attr('src').split('/')[2]
+      })
     });
-    arrIds.push({ 'userId': $('#dropdown-navbar-user').data('uid') });
+    arrIds.push({
+      'userId': $('#dropdown-navbar-user').data('uid'),
+      'username': $('#dropdown-navbar-user').find('span#navbar-username').text(),
+      'avatar': $('#dropdown-navbar-user').find('img').attr('src').split('/')[2]
+    });
 
     $.post('/group-chat/add-new', {
       arrIds: arrIds,
@@ -159,7 +167,7 @@ function callCreateGroupChat() {
                   <a href="javascript:void(0)">&nbsp;</a>
               </span>
               <span class="chat-menu-right">
-                  <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+                  <a href="#membersModal_${data.groupChat._id}" class="number-members" data-toggle="modal">
                       <span class="show-number-members">${data.groupChat.userAmount}</span>
                       <i class="fa fa-users"></i>
                   </a>
@@ -252,6 +260,69 @@ function callCreateGroupChat() {
       // 7. Emit sk tới server
       socket.emit('new-group-created', { groupChat: data.groupChat });
 
+      //   8. Kich hoat member modal
+      let memberAdded = '';
+      data.groupChat.members.forEach(function(member) {
+        memberAdded += `
+            <li data-uid="${member.userId}">
+            <div class="contactPanelMember">
+                <div class="user-avatar">
+                    <img src="images/users/${member.avatar}" alt="">
+                </div>
+                <div class="user-name">
+                    <span class="user-name">${member.username}</span>
+                </div>
+                <br>
+            </div>
+        </li>
+        `
+      });
+      let memberModal = `
+      <div class="modal fade" id="membersModal_${data.groupChat._id}" role="dialog">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Quản lý thành viên</h4>
+              </div>
+              <div class="modal-body">
+                    <div class="col-md-5 col-sm-12 find-user-add-to-group">
+                        <div class="row form-search-to-add">
+                            <div class="form-group">
+                                <input type="text" class="form-control add-more-members" id="input-search-friends-to-add-group-chat_${data.groupChat._id}" placeholder="Tìm bạn bè để thêm vào nhóm" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-lg btn-add-more-members" type="button" id="btn-search-friends-to-add-group-chat_${data.groupChat._id}">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row result-searched">
+                            <ul id="group-chat-more-friends" class="${data.groupChat._id}"> 
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 col-sm-12 list-user-added-member">
+                        <ul id="friend-added">`+
+                        
+                          memberAdded +
+                            
+                        `</ul>
+                        <div class="text-center" id="action-create-name-chat">
+                            <br>
+                            <button type="button" class="btn btn-primary" id="btn-save-group-chat">Thêm</button>
+                            <button type="button" class="btn btn-danger" id="btn-cancel-group-chat">Hủy</button>
+                        </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  `;
+      $('body').append(memberModal);
+      allowAddMoreFriendToGroup();
+
     }).fail(function (response) {
       alertify.notify(response.responseText, 'error', 5);
     });
@@ -309,7 +380,7 @@ socket.on('response-new-group-created', function (data) {
                   <a href="javascript:void(0)">&nbsp;</a>
               </span>
               <span class="chat-menu-right">
-                  <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+                  <a href="#membersModal_${data.groupChat._id}" class="number-members" data-toggle="modal">
                       <span class="show-number-members">${data.groupChat.userAmount}</span>
                       <i class="fa fa-users"></i>
                   </a>
@@ -398,6 +469,69 @@ socket.on('response-new-group-created', function (data) {
 
   // 6. Kích hoạt gridPhoto trong imageModal
   gridPhotos(5);
+
+  //   7. Kich hoat member modal
+  let memberAdded = '';
+  data.groupChat.members.forEach(function(member) {
+    memberAdded += `
+        <li data-uid="${member.userId}">
+        <div class="contactPanelMember">
+            <div class="user-avatar">
+                <img src="images/users/${member.avatar}" alt="">
+            </div>
+            <div class="user-name">
+                <span class="user-name">${member.username}</span>
+            </div>
+            <br>
+        </div>
+    </li>
+    `
+  });
+  let memberModal = `
+      <div class="modal fade" id="membersModal_${data.groupChat._id}" role="dialog">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Quản lý thành viên</h4>
+              </div>
+              <div class="modal-body">
+                    <div class="col-md-5 col-sm-12 find-user-add-to-group">
+                        <div class="row form-search-to-add">
+                            <div class="form-group">
+                                <input type="text" class="form-control add-more-members" id="input-search-friends-to-add-group-chat_${data.groupChat._id}" placeholder="Tìm bạn bè để thêm vào nhóm" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-lg btn-add-more-members" type="button" id="btn-search-friends-to-add-group-chat_${data.groupChat._id}">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row result-searched">
+                            <ul id="group-chat-more-friends" class="${data.groupChat._id}"> 
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 col-sm-12 list-user-added-member">
+                        <ul id="friend-added">`+
+                        
+                          memberAdded +
+                            
+                        `</ul>
+                        <div class="text-center" id="action-create-name-chat">
+                            <br>
+                            <button type="button" class="btn btn-primary" id="btn-save-group-chat">Thêm</button>
+                            <button type="button" class="btn btn-danger" id="btn-cancel-group-chat">Hủy</button>
+                        </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  `;
+  $('body').append(memberModal);
+  allowAddMoreFriendToGroup();
 });
 
 $(document).ready(function () {

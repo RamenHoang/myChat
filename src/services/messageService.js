@@ -357,6 +357,28 @@ let readMore = (userId, conversationId, skipMess, isGroup) => {
   });
 }
 
+let getMessagesInGroup = targetId => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let messages = await MessageModel.model.getMessagesInGroup(targetId);
+      resolve(messages);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+let getMessagesInPersonal = (userId, targetId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let messages = await MessageModel.model.getMessagesInPersonal(userId, targetId);
+      resolve(messages);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
   getAllConversations: getAllConversations,
   addNewTextEmoji: addNewTextEmoji,
@@ -364,5 +386,7 @@ module.exports = {
   addNewAttachment: addNewAttachment,
   removeMessage: removeMessage,
   readMoreAllConversations: readMoreAllConversations,
-  readMore: readMore
+  readMore: readMore,
+  getMessagesInGroup: getMessagesInGroup,
+  getMessagesInPersonal: getMessagesInPersonal
 }

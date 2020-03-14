@@ -34,6 +34,9 @@ function acceptRequestContact() {
           // Cho phép xoá danh bạ
           removeContact();
 
+          // Cho phép click vào nút chat để chat
+          clickAndDirectToChat();
+
           // Tăng số danh bạ ở tab "Danh bạ"
           increaseNumberNotifContact('count-contacts');
 
@@ -218,6 +221,9 @@ socket.on('response-accept-request-contact', function (user) {
   // Cho phép xoá danh bạ
   removeContact();
   increaseNumberNotifContact('count-contacts', 1);
+
+  // Cho phép click vào nút chat để chat
+  clickAndDirectToChat();
 
   // Xử lý realtime phần chat sau khi chấp nhận kết bạn
   // 1. Đẩy người dùng mới vào leftSide

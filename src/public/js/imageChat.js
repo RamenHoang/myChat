@@ -45,13 +45,13 @@ function imageChat(chatId) {
           message: data.message
         }
 
-        let imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}" class="show-image-chat">`;
+        let imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}" class="show-image-chat bubble-image">`;
         increaseNumberMessageGroup(chatId);
 
         if (isChatGroup) {
           $(`.right .chat[data-chat=${chatId}]`).append(
             `
-            <div class="bubble me bubble-image-file group" data-mess-id="${data.message._id}">
+            <div class="bubble me bubble-image-file  group" data-mess-id="${data.message._id}">
               <img src="/images/users/${data.message.sender.avatar}" class="avatar-small" title="${data.message.sender.name}"/>
               ${imageMessage}
             </div>
@@ -102,6 +102,9 @@ function imageChat(chatId) {
         $(`#imagesModal_${chatId}`).find('div.all-images').append(
           `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}">`
         );
+
+        // 10. Cho phép xem hình ảnh
+        showImage();
       },
       error: function (err) {
         alertify.notify(err.responseText, 'error', 5);
@@ -112,14 +115,14 @@ function imageChat(chatId) {
 
 socket.on('response-chat-image', function (response) {
   let chatId;
-  let imageMessage = `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}" class="show-image-chat">`;
+  let imageMessage = `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}" class="show-image-chat bubble-image">`;
   if (response.currentGroupId) {
     chatId = response.currentGroupId;
     if (response.currentUserId !== $('#dropdown-navbar-user').data('uid')) {
       increaseNumberMessageGroup(chatId);
       $(`.right .chat[data-chat=${chatId}]`).append(
         `
-        <div class="bubble you bubble-image-file group" data-mess-id="${response.message._id}">
+        <div class="bubble you bubble-image-file  group" data-mess-id="${response.message._id}">
           <img src="/images/users/${response.message.sender.avatar}" class="avatar-small" title="${response.message.sender.name}"/>
           ${imageMessage}
         </div>
@@ -163,4 +166,7 @@ socket.on('response-chat-image', function (response) {
   $(`#imagesModal_${chatId}`).find('div.all-images').append(
     `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}">`
   );
+
+  // 10. Cho phép xem hình ảnh
+  showImage();
 });
