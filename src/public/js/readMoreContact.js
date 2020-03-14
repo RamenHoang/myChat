@@ -36,6 +36,12 @@ $(document).ready(function() {
       });
       // Cho phép xoá danh bạ
       removeContact();
+
+      // Cho phép click vào nút chat để chat
+      clickAndDirectToChat();
+
+      // 
+      
     });
   });
 

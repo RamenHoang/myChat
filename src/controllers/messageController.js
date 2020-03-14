@@ -1,5 +1,5 @@
 import { validationResult } from 'express-validator/check';
-import { message } from '../services/services';
+import { message, user, groupChat } from '../services/services';
 import multer from 'multer';
 import { app } from '../config/app';
 import { transErrors, transSuccess } from '../../lan/vi';
@@ -201,10 +201,53 @@ let readMore = async (req, res) => {
   }
 }
 
+let getConversationWithMess = async (req, res) => {
+  try {
+    let userId = `${req.user._id}`;
+    let targetId = req.query.targetId;
+    let isGroup = (req.query.isGroup === 'true');
+    let conversation = null;
+    let messages = null;
+    if (isGroup) {
+      conversation = await groupChat.getChatGroupById(targetId);
+      messages = await message.getMessagesInGroup(targetId);
+    } else {
+      conversation = await user.getNormalUserDataById(targetId);
+      messages = await message.getMessagesInPersonal(userId, targetId);
+    }
+    conversation = conversation.toObject();
+    conversation['messages'] = messages;
+    
+    let dataToRender = {
+      newAllConversations: [conversation],
+      getDuration: getDuration,
+      getLastMessage: getLastMessage,
+      user: req.user,
+      bufferToBase64: bufferToBase64
+    }
+
+    let leftSideData = await renderFile('src/views/main/readMoreConversations/_leftSide.ejs', dataToRender);
+    let rightSideData = await renderFile('src/views/main/readMoreConversations/_rightSide.ejs', dataToRender);
+    let imageModalData = await renderFile('src/views/main/readMoreConversations/_imageModal.ejs', dataToRender);
+    let attachmentModalData = await renderFile('src/views/main/readMoreConversations/_attachmentModal.ejs', dataToRender);
+
+
+    res.status(200).send({
+      leftSideData: leftSideData,
+      rightSideData: rightSideData,
+      imageModalData: imageModalData,
+      attachmentModalData: attachmentModalData
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
 module.exports = {
   addNewTextEmoji: addNewTextEmoji,
   addNewImage: addNewImage,
   addNewAttachment: addNewAttachment,
   readMoreAllConversations: readMoreAllConversations,
-  readMore: readMore
+  readMore: readMore,
+  getConversationWithMess: getConversationWithMess
 }

@@ -239,7 +239,29 @@ ContactSchema.statics = {
 				},
 				{ 'status': true }
 			]
-		}).sort({'updatedAt': -1}).exec();
+		}).sort({ 'updatedAt': -1 }).exec();
+	},
+	getContactById(targetId) {
+		return this.findById(targetId).exec();
+	},
+	searchMoreFriendsByUserId(userId, memberIds) {
+		return this.find({
+			$and: [
+				{
+					$or: [
+						{
+							'userId': userId,
+							'contactId': { $nin: memberIds }
+						},
+						{
+							'contactId': userId,
+							'userId': { $nin: memberIds }
+						}
+					]
+				},
+				{ 'status': true }
+			]
+		}).exec();
 	}
 };
 

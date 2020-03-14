@@ -23,7 +23,7 @@
           <a href="javascript:void(0)">&nbsp;</a>
         </span>
         <span class="chat-menu-right">
-          <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+          <a href="#membersModal_<%= conversation._id %>" class="number-members" data-toggle="modal">
             <span class="show-number-members"><%= conversation.userAmount %></span>
             <i class="fa fa-users"></i>
           </a>
@@ -50,11 +50,11 @@
           <% } %>
           <% if (message.messageType === 'image') { %>
           <div
-            class="bubble <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %> bubble-image-file group"
+            class="bubble <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %>  bubble-image-file group"
             data-mess-id="<%= message._id %>">
             <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
             <img src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-              class="show-image-chat">
+              class="show-image-chat bubble-image">
           </div>
           <% } %>
           <% if (message.messageType === 'file') { %>
@@ -122,10 +122,10 @@
             data-mess-id="<%= message._id %>"><%= message.text %></div>
           <% } %>
           <% if (message.messageType === 'image') { %>
-          <div class="bubble <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %> bubble-image-file"
+          <div class="bubble <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %>  bubble-image-file"
             data-mess-id="<%= message._id %>">
             <img src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-              class="show-image-chat">
+              class="show-image-chat bubble-image">
           </div>
           <% } %>
           <% if (message.messageType === 'file') { %>

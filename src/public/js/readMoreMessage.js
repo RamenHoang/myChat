@@ -1,5 +1,5 @@
 function readMoreMessage() {
-  $('.right .chat').scroll(function() {
+  $('.right .chat').unbind('scroll').on('scroll', function() {
 
     // get top message
     let topMess = $(this).find('.bubble:first');
@@ -17,13 +17,15 @@ function readMoreMessage() {
       $.get(`/message/read-more?targetId=${targetId}&skipMess=${skipMess}&chatInGroup=${chatInGroup}`, function(data) {
         setTimeout(() => {
           if (data.rightSideData.trim() === '') {
-            alertify.notify('Đã hiển thị hết tất cả tin nhắn', 'error', 5);
             $(`.right .chat[data-chat=${targetId}]`).find('.message-loading').remove();
           } else {
             $(`.right .chat[data-chat=${targetId}]`).find('.message-loading').remove();
             // 2. Render rightSide
             $(`.right .chat[data-chat=${targetId}]`).prepend(data.rightSideData);
+            // Ngăn không cho scroll bị đẩy lên đầu
             $(`.right .chat[data-chat=${targetId}]`).scrollTop(topMess.offset().top - currentHeight);
+            // Cho phép xem hình ảnh
+            showImage();
             // ---------------------------------------------------
     
     

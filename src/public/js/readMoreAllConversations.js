@@ -20,6 +20,10 @@ $(document).ready(function () {
 
         // 2. Render rightSide
         $('#screen-chat').append(data.rightSideData);
+        // Kích hoatj xem thêm tin nhắn
+        readMoreMessage();
+        // Cho phép xem hình ảnh
+        showImage();
         // ---------------------------------------------------
 
 
@@ -36,87 +40,89 @@ $(document).ready(function () {
 
         // 5. Kiểm tra online-offline
         socket.emit('check-onoff');
+
+        allowAddMoreFriendToGroup()
       }
     });
   });
 
-  // Contact's request sent
-  $('#link-read-more-all-conversation-sent').bind('click', function () {
-    let skipNumber = $('#request-contact-sent ul.contactList').find('li').length;
+  // // Contact's request sent
+  // $('#link-read-more-all-conversation-sent').bind('click', function () {
+  //   let skipNumber = $('#request-contact-sent ul.contactList').find('li').length;
 
-    $.get(`/contact/read-more-contact-sent?skipNumber=${skipNumber}`, function (contacts) {
-      if (contacts.length === 0) {
-        alertify.notify('Đã hiển thị hết tất cả yêu cầu', 'error', 5);
-        return;
-      }
-      contacts.forEach(function (contact) {
-        $('#request-contact-sent ul.contactList').append(
-          `<li class="_contactList" data-uid="${contact._id}">
-              <div class="contactPanel">
-                  <div class="user-avatar">
-                      <img src="images/users/${contact.avatar}" alt="">
-                  </div>
-                  <div class="user-name">
-                      <p>
-                          ${contact.username}
-                      </p>
-                  </div>
-                  <br>
-                  <div class="user-address">
-                      <span>&nbsp; ${contact.address}</span>
-                  </div>
-                  <div class="user-remove-request-sent action-danger" data-uid="${contact._id}">
-                      Hủy yêu cầu
-                  </div>
-              </div>
-          </li>`
-        );
-      }
-      );
-      // Cho phép huỷ đi yêu cầu vừa đươc tạo ra ở tab "đang chờ xác nhận"
-      removeRequestContactSent();
-    });
-  });
+  //   $.get(`/contact/read-more-contact-sent?skipNumber=${skipNumber}`, function (contacts) {
+  //     if (contacts.length === 0) {
+  //       alertify.notify('Đã hiển thị hết tất cả yêu cầu', 'error', 5);
+  //       return;
+  //     }
+  //     contacts.forEach(function (contact) {
+  //       $('#request-contact-sent ul.contactList').append(
+  //         `<li class="_contactList" data-uid="${contact._id}">
+  //             <div class="contactPanel">
+  //                 <div class="user-avatar">
+  //                     <img src="images/users/${contact.avatar}" alt="">
+  //                 </div>
+  //                 <div class="user-name">
+  //                     <p>
+  //                         ${contact.username}
+  //                     </p>
+  //                 </div>
+  //                 <br>
+  //                 <div class="user-address">
+  //                     <span>&nbsp; ${contact.address}</span>
+  //                 </div>
+  //                 <div class="user-remove-request-sent action-danger" data-uid="${contact._id}">
+  //                     Hủy yêu cầu
+  //                 </div>
+  //             </div>
+  //         </li>`
+  //       );
+  //     }
+  //     );
+  //     // Cho phép huỷ đi yêu cầu vừa đươc tạo ra ở tab "đang chờ xác nhận"
+  //     removeRequestContactSent();
+  //   });
+  // });
 
-  // Contact's request received 
-  $('#link-read-more-all-conversation-received').bind('click', function () {
-    let skipNumber = $('#request-contact-received ul.contactList').find('li').length;
+  // // Contact's request received 
+  // $('#link-read-more-all-conversation-received').bind('click', function () {
+  //   let skipNumber = $('#request-contact-received ul.contactList').find('li').length;
 
-    $.get(`/contact/read-more-contact-received?skipNumber=${skipNumber}`, function (contacts) {
-      if (contacts.length === 0) {
-        alertify.notify('Đã hiển thị hết tất cả yêu cầu', 'error', 5);
-        return;
-      }
-      contacts.forEach(function (contact) {
-        $('#request-contact-received ul.contactList').append(
-          `<li class="_contactList" data-uid="${contact.id}">
-              <div class="contactPanel">
-                  <div class="user-avatar">
-                      <img src="images/users/${contact.avatar}" alt="">
-                  </div>
-                  <div class="user-name">
-                      <p>
-                          ${contact.username}
-                      </p>
-                  </div>
-                  <br>
-                  <div class="user-address">
-                      <span>&nbsp ${contact.address}</span>
-                  </div>
-                  <div class="user-acccept-contact-received" data-uid="${contact.id}">
-                      Chấp nhận
-                  </div>
-                  <div class="user-reject-request-contact-received action-danger" data-uid="${contact.id}">
-                      Xóa yêu cầu
-                  </div>
-              </div>
-            </li>`
-        );
-      });
-      // Cho phép huỷ những yêu cầu kết bạn
-      removeRequestContactReceived();
-      // Cho phép chấp nhận yêu cầu kết bạn
-      acceptRequestContact();
-    });
-  });
+  //   $.get(`/contact/read-more-contact-received?skipNumber=${skipNumber}`, function (contacts) {
+  //     if (contacts.length === 0) {
+  //       alertify.notify('Đã hiển thị hết tất cả yêu cầu', 'error', 5);
+  //       return;
+  //     }
+  //     contacts.forEach(function (contact) {
+  //       $('#request-contact-received ul.contactList').append(
+  //         `<li class="_contactList" data-uid="${contact.id}">
+  //             <div class="contactPanel">
+  //                 <div class="user-avatar">
+  //                     <img src="images/users/${contact.avatar}" alt="">
+  //                 </div>
+  //                 <div class="user-name">
+  //                     <p>
+  //                         ${contact.username}
+  //                     </p>
+  //                 </div>
+  //                 <br>
+  //                 <div class="user-address">
+  //                     <span>&nbsp ${contact.address}</span>
+  //                 </div>
+  //                 <div class="user-acccept-contact-received" data-uid="${contact.id}">
+  //                     Chấp nhận
+  //                 </div>
+  //                 <div class="user-reject-request-contact-received action-danger" data-uid="${contact.id}">
+  //                     Xóa yêu cầu
+  //                 </div>
+  //             </div>
+  //           </li>`
+  //       );
+  //     });
+  //     // Cho phép huỷ những yêu cầu kết bạn
+  //     removeRequestContactReceived();
+  //     // Cho phép chấp nhận yêu cầu kết bạn
+  //     acceptRequestContact();
+  //   });
+  // });
 });
