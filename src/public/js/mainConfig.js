@@ -188,6 +188,9 @@ function alertAddMoreFriends() {
 }
 
 $(document).ready(function () {
+
+  console.log(navigator.userAgent);
+
   // Hide số thông báo trên đầu icon mở modal contact
   showModalContacts();
 

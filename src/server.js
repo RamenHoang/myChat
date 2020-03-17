@@ -25,7 +25,9 @@ let server = http.createServer(app);
 let io = socketio(server);
 
 // Connect to mongoDB
-connectDb();
+connectDb()
+	.then(() => console.log('connected'))
+	.catch((error) => console.log(error));
 
 // Config session
 session.config(app);
@@ -34,7 +36,7 @@ session.config(app);
 configViewEngine(app);
 
 // Enable post data for request
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Enable flash message
 app.use(connectFlash());

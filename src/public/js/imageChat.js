@@ -3,6 +3,15 @@ function bufferToBase64(buffer) {
     return data + String.fromCharCode(byte);
   }, ''));
 }
+function bufferToBase64Safari(buffer) {
+  let base64 = btoa(new Uint8Array(buffer).reduce(function (data, byte) {
+    return data + String.fromCharCode(byte);
+  }, ''));
+  while (base64.length % 4 > 0) {
+    b64str += '=';
+  }
+  return base64;
+}
 
 function imageChat(chatId) {
   $(`#image-chat-${chatId}`).unbind('change').on('change', function () {
@@ -44,8 +53,15 @@ function imageChat(chatId) {
         let dataToEmit = {
           message: data.message
         }
-
-        let imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}" class="show-image-chat bubble-image">`;
+        let imageMessage;
+        if (window.chrome) {
+          console.log('chrome');
+          imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}" class="show-image-chat bubble-image">`;
+        } 
+        if (window.safari) {
+          console.log('safari');
+          imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64Safari(data.message.file.data.data)}" class="show-image-chat bubble-image">`;
+        }
         increaseNumberMessageGroup(chatId);
 
         if (isChatGroup) {
