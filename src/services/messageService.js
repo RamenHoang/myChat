@@ -131,9 +131,9 @@ let addNewTextEmoji = (sender, receiverId, messageVal, isChatGroup) => {
 
 let addNewImage = (sender, receiverId, messageVal, isChatGroup) => {
   return new Promise(async (resolve, reject) => {
-    let imageBuffer = await fsExtra.readFile(messageVal.path);
+    let imageBuffer = null;
     let imageContentType = messageVal.mimetype;
-    let imageName = messageVal.originalname;
+    let imageName = messageVal.filename;
 
     try {
       let receiver, newMessageItem;

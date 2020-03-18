@@ -56,11 +56,11 @@ function imageChat(chatId) {
         let imageMessage;
         if (window.chrome) {
           console.log('chrome');
-          imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}" class="show-image-chat bubble-image">`;
+          imageMessage = `<img src="/images/chat/message/${data.message.file.fileName}" class="show-image-chat bubble-image">`;
         } 
         if (window.safari) {
           console.log('safari');
-          imageMessage = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64Safari(data.message.file.data.data)}" class="show-image-chat bubble-image">`;
+          imageMessage = `<img src="/images/chat/message/${data.message.file.fileName}" class="show-image-chat bubble-image">`;
         }
         increaseNumberMessageGroup(chatId);
 
@@ -116,7 +116,7 @@ function imageChat(chatId) {
 
         // 9. Đổ hình ảnh vào modal hình ảnh
         $(`#imagesModal_${chatId}`).find('div.all-images').append(
-          `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}">`
+          `<img src="/images/chat/message/${data.message.file.fileName}">`
         );
 
         // 10. Cho phép xem hình ảnh
@@ -131,7 +131,7 @@ function imageChat(chatId) {
 
 socket.on('response-chat-image', function (response) {
   let chatId;
-  let imageMessage = `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}" class="show-image-chat bubble-image">`;
+  let imageMessage = `<img src="/images/chat/message/${response.message.file.fileName}" class="show-image-chat bubble-image">`;
   if (response.currentGroupId) {
     chatId = response.currentGroupId;
     if (response.currentUserId !== $('#dropdown-navbar-user').data('uid')) {
@@ -180,7 +180,7 @@ socket.on('response-chat-image', function (response) {
 
   // 9. Đổ hình ảnh vào modal hình ảnh
   $(`#imagesModal_${chatId}`).find('div.all-images').append(
-    `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}">`
+    `<img src="/images/chat/message/${response.message.file.fileName}">`
   );
 
   // 10. Cho phép xem hình ảnh

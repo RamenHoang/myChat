@@ -6,7 +6,8 @@ import { transErrors, transSuccess } from '../../lan/vi';
 import fsExtra from 'fs-extra';
 import ejs from 'ejs';
 import { getDuration, getLastMessage, bufferToBase64 } from '../helpers/clientHelper';
-import { promisify } from 'util'
+import { promisify } from 'util';
+import uuidv4 from 'uuid/v4';
 
 // Make ejs render file function can use async-await
 const renderFile = promisify(ejs.renderFile).bind(ejs);
@@ -52,7 +53,7 @@ let storageImageChat = multer.diskStorage({
       return callback(transErrors.image_message_type, null);
     }
 
-    let image_name = `${file.originalname}`;
+    let image_name = `${Date.now()}-${uuidv4()}-${file.originalname}`;
     callback(null, image_name);
   }
 });
@@ -80,10 +81,12 @@ let addNewImage = (req, res) => {
       let messageVal = req.file;
       let isChatGroup = req.body.isChatGroup;
 
+      console.log(messageVal);
+
       let newMessage = await message.addNewImage(sender, receiverId, messageVal, isChatGroup);
 
-      // Remove image
-      await fsExtra.remove(`${app.image_message_directory}/${newMessage.file.fileName}`);
+      // // Remove image
+      // await fsExtra.remove(`${app.image_message_directory}/${newMessage.file.fileName}`);
 
       return res.status(200).send({ message: newMessage });
     } catch (error) {
