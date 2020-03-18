@@ -11,8 +11,8 @@
       <div class="bubble <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %>  bubble-image-file group"
         data-mess-id="<%= message._id %>">
         <img src="/images/users/<%= message.sender.avatar %>" class="avatar-small" title="<%= message.sender.name %>">
-        <img src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-          class="show-image-chat bubble-image">
+        <img src="/images/chat/message/<%= message.file.fileName %>"
+                            class="show-image-chat bubble-image">
       </div>
     <% } %>
     <% if (message.messageType === 'file') { %>
@@ -36,8 +36,8 @@
     <% if (message.messageType === 'image') { %>
       <div class="bubble <% if (message.senderId == user._id) { %> me <% } else { %> you <% } %>  bubble-image-file"
         data-mess-id="<%= message._id %>">
-        <img src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>"
-          class="show-image-chat bubble-image">
+        <img src="/images/chat/message/<%= message.file.fileName %>"
+                            class="show-image-chat bubble-image">
       </div>
     <% } %>
     <% if (message.messageType === 'file') { %>
