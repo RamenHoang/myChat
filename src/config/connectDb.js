@@ -12,16 +12,17 @@ import bluebird from 'bluebird';
 let connectDb = () => {
 	mongoose.Promise = bluebird;
 
-	let DB_CONNECTION = process.env.DB_CONNECTION;
-	let DB_HOST 			= process.env.DB_HOST;
-	let DB_PORT			 	= process.env.DB_PORT;
-	let DB_NAME 			= process.env.DB_NAME;
-	let DB_USERNAME 	= process.env.DB_USERNAME;
-	let DB_PASSWORD 	= process.env.DB_PASSWORD;
+	// let DB_CONNECTION = process.env.DB_CONNECTION;
+	// let DB_HOST 			= process.env.DB_HOST;
+	// let DB_PORT			 	= process.env.DB_PORT;
+	// let DB_NAME 			= process.env.DB_NAME;
+	// let DB_USERNAME 	= process.env.DB_USERNAME;
+	// let DB_PASSWORD 	= process.env.DB_PASSWORD;
 
-	let URI = `${DB_CONNECTION}://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+	// let URI = `${DB_CONNECTION}://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
-	return mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+	return mongoose.connect('mongodb+srv://ramen:Ramen1999@cluster0-ox4sy.mongodb.net/test?retryWrites=true&w=majority', 
+	{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, dbName: 'myChat' });
 }
 
 module.exports = connectDb;

@@ -3,17 +3,18 @@ import connectMongo from 'connect-mongo';
 
 let mongoStore = connectMongo(session);
 
-let DB_CONNECTION = process.env.DB_CONNECTION;
-let DB_HOST 			= process.env.DB_HOST;
-let DB_PORT			 	= process.env.DB_PORT;
-let DB_NAME 			= process.env.DB_NAME;
+// let DB_CONNECTION = process.env.DB_CONNECTION;
+// let DB_HOST 			= process.env.DB_HOST;
+// let DB_PORT			 	= process.env.DB_PORT;
+// let DB_NAME 			= process.env.DB_NAME;
 
 /**
  * [sessionStore is where store session]
  * @type {mongodb}
  */
 let sessionStore = new mongoStore({
-	url: `${DB_CONNECTION}://${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+	// url: `${DB_CONNECTION}://${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+	url: 'mongodb+srv://ramen:Ramen1999@cluster0-ox4sy.mongodb.net/test?retryWrites=true&w=majority',
 	autoReconnect: true
 	// autoRemove: 'native'
 });

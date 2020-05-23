@@ -57,9 +57,9 @@ configSocketio(io, cookieParser, session.sessionStore);
 // Init all sockets
 initSockets(io);
 
-let hostname = process.env.APP_HOSTNAME;
-let port = process.env.APP_PORT;
+// let hostname = process.env.APP_HOSTNAME;
+// let port = process.env.APP_PORT;
 
-server.listen(port, hostname, () => {
-	console.log(`Hello Ramen, I'm running at ${hostname}:${port}/`);
+server.listen(8080, '34.72.58.107', () => {
+	console.log(`Hello Ramen, I'm running at 34.72.58.107:8080/`);
 });
